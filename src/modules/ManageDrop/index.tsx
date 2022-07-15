@@ -64,9 +64,15 @@ const ManageDrop = ({}) => {
   useEffect(() => {
     console.log('eventsList', eventsList);
     if (eventsList && eventsList.length > 1 && account) {
-      let filtredEvents = eventsList.filter((item: any) => item[2].toString() !== '0');
+      let filtredEvents = eventsList.filter(
+        (item: any) =>
+          item[2].toString() !== '0' && item[4].toLowerCase() === account.toLowerCase(),
+      );
 
-      console.log('filtredEvents', filtredEvents);
+      if (filtredEvents.length === 0) {
+        setEventsActive(false);
+        return;
+      }
 
       setEvents(filtredEvents);
 

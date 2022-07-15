@@ -39,14 +39,22 @@ function useERC1155Tokens(address: string) {
       }
 
       //@ts-ignore
-      for (let i = 1; i <= getNftsIdsOfUser.length; i++) {
-        const balanceOf: string = await buildQueryGodwoken(balanceOfQuery, [account, i], 500000);
-        const tokenURI: string = await buildQueryGodwoken(tokenUriQuery, [i], 500000);
+      for (const nftId of getNftsIdsOfUser) {
+        const balanceOf: string = await buildQueryGodwoken(
+          balanceOfQuery,
+          [account, +nftId.toString()],
+          500000,
+        );
+        const tokenURI: string = await buildQueryGodwoken(
+          tokenUriQuery,
+          [+nftId.toString()],
+          500000,
+        );
 
         tokensUris.push({
           token_uri: tokenURI,
           token_address: LINKS_NFT_ADDRESS,
-          token_id: String(i),
+          token_id: String(+nftId.toString()),
           owner_of: account,
         });
       }

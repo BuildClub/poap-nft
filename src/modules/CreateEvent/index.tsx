@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { Input, Select, Tabs, Tooltip, DatePicker, Space, DatePickerProps } from 'antd';
 import cn from 'classnames';
 import s from './CreateEvent.module.scss';
@@ -11,6 +11,9 @@ import { ADD_EVENT_KEY } from '@utils/queryKeys';
 import { create as ipfsHttpClient } from 'ipfs-http-client';
 // import keccak256 from 'keccak256';
 // import { bufferToHex } from 'ethereumjs-util';
+import { NFTStorage, File, Blob } from 'nft.storage';
+//@ts-ignore
+// const nftStorageClient = new NFTStorage({ token: process.env.REACT_APP_NFT_STORAGE_API_KEY });
 
 const { TextArea } = Input;
 // const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
@@ -51,10 +54,10 @@ const CreateEvent = ({}) => {
 
   const { data: addEventTx, mutateAsync: addEvent, isLoading: isAddEventLoading } = useMutation(
     `${ADD_EVENT_KEY}_${formInput.email}_${formInput.name}_${fileUrl}`,
-    (url: any): Promise<any> =>
+    (cid: string): Promise<any> =>
       buildQueryGodwoken(
         addEventQuery,
-        [account, formInput.name, formInput.description, formInput.email, url],
+        [account, formInput.name, formInput.description, formInput.email, cid],
         500000,
       ),
     {
@@ -97,19 +100,25 @@ const CreateEvent = ({}) => {
 
   const createEvent = async () => {
     const { name, description, email } = formInput;
-    // console.log(' name, description, email ', name, description, email);
 
     if (!name || !description || !email || !fileUrl) return;
-    // upload to IPFS
+
     const data = JSON.stringify({
       name,
       description,
       image: fileUrl,
     });
 
+    // const testCid = await nftStorageClient.storeDirectory([
+    //   new File(['hello world'], 'hello.txt'),
+    //   new File([JSON.stringify({ from: 'incognito' }, null, 2)], 'metadata.json'),
+    // ]);
+
+    // console.log('testCid', testCid);
+
     try {
       const added = await client.add(data);
-      const url = added.path;
+      const cid = added.path;
       // const url = `https://ipfs.infura.io/ipfs/${added.path}`;
 
       // const image = await getExampleImage();
@@ -136,12 +145,12 @@ const CreateEvent = ({}) => {
       // //@ts-ignore
       // const nftStorageClient = new NFTStorage({ token: process.env.REACT_APP_NFT_STORAGE_API_KEY });
       // const metadata = await nftStorageClient.store(nft);
-
+      //
       // console.log('NFT data stored!');
       // console.log('Metadata URI: ', metadata.url);
 
-      await addEvent(url);
-      // console.log('addEventTx', addEventTx);
+      await addEvent(cid);
+      console.log('addEventTx', addEventTx);
     } catch (error) {
       console.log('Error uploading file:', error);
     }
@@ -166,64 +175,11 @@ const CreateEvent = ({}) => {
           <TextArea
             className={s.areaInput}
             value={formInput.description}
-            onChange={(e) => updateFormInput({ ...formInput, description: e.target.value })}
+            onChange={(e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
+              updateFormInput({ ...formInput, description: e.target.value })
+            }
           />
         </div>
-
-        {/* <div className={s.inputs}>
-        <div className={s.input}>
-          <h5 className={s.subTitle}>Country</h5>
-
-          <div
-            onFocus={buyoutPriceFocus}
-            onBlur={buyoutPriceFocus}
-            className={cn(s.amount, selectBuyoutPriceFocus && s.amountFocus)}
-          >
-            <Input
-              className={s.amountInput}
-              placeholder="Amount"
-              //   value={stopPriceValue}
-              //   onChange={(e) => onStopPriceHandler(e.target.value)}
-            />
-          </div>
-        </div>
-        <div className={s.input}>
-          <h5 className={s.subTitle}>City</h5>
-
-          <div
-            onFocus={buyoutPriceFocus}
-            onBlur={buyoutPriceFocus}
-            className={cn(s.amount, selectBuyoutPriceFocus && s.amountFocus)}
-          >
-            <Input
-              className={s.amountInput}
-              placeholder="Amount"
-              //   value={stopPriceValue}
-              //   onChange={(e) => onStopPriceHandler(e.target.value)}
-            />
-          </div>
-        </div>
-      </div> */}
-
-        {/* <Space direction="horizontal"> */}
-
-        {/* <div className={s.inputs}>
-        <div className={s.inputDate}>
-          <h5 className={s.subTitle}>Start date</h5>
-
-          <DatePicker className={cn(s.amount, s.dateInput)} onChange={onChange} />
-        </div>
-        <div className={s.inputDate}>
-          <h5 className={s.subTitle}>End date</h5>
-
-          <DatePicker className={cn(s.amount, s.dateInput)} onChange={onChange} />
-        </div>
-        <div className={s.inputDate}>
-          <h5 className={s.subTitle}>Expiration date</h5>
-
-          <DatePicker className={cn(s.amount, s.dateInput)} onChange={onChange} />
-        </div>
-      </div> */}
 
         <div className={s.inputs}>
           <div className={s.input}>
@@ -246,121 +202,11 @@ const CreateEvent = ({}) => {
           </div>
         </div>
 
-        {/* <div className={s.inputs}>
-        <div className={s.input}>
-          <h5 className={s.subTitle}>Upload emails</h5>
-
-          <div
-            onFocus={buyoutPriceFocus}
-            onBlur={buyoutPriceFocus}
-            className={cn(s.amount, selectBuyoutPriceFocus && s.amountFocus)}
-          >
-            <Input
-              className={s.amountInput}
-              placeholder="Amount"
-              type="file"
-              //   value={stopPriceValue}
-              onChange={(e) => handleChangeXls(e)}
-            />
-          </div>
-        </div>
-        <div className={s.input}>
-          <h5 className={s.subTitle}>Upload image</h5>
-
-          <div
-            onFocus={buyoutPriceFocus}
-            onBlur={buyoutPriceFocus}
-            className={cn(s.amount, selectBuyoutPriceFocus && s.amountFocus)}
-          >
-            <Input
-              className={s.amountInput}
-              placeholder="Amount"
-              type="file"
-              //   value={stopPriceValue}
-              //   onChange={(e) => onStopPriceHandler(e.target.value)}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className={s.inputs}>
-        <div className={s.input}>
-          <h5 className={s.subTitle}>Number of links</h5>
-
-          <div
-            onFocus={buyoutPriceFocus}
-            onBlur={buyoutPriceFocus}
-            className={cn(s.amount, selectBuyoutPriceFocus && s.amountFocus)}
-          >
-            <Input
-              className={s.amountInput}
-              placeholder="Amount"
-              type="number"
-              //   value={stopPriceValue}
-              //   onChange={(e) => onStopPriceHandler(e.target.value)}
-            />
-          </div>
-        </div>
-        <div className={s.input}>
-          <h5 className={s.subTitle}>Email</h5>
-
-          <div
-            onFocus={buyoutPriceFocus}
-            onBlur={buyoutPriceFocus}
-            className={cn(s.amount, selectBuyoutPriceFocus && s.amountFocus)}
-          >
-            <Input
-              className={s.amountInput}
-              placeholder="Amount"
-              //   value={stopPriceValue}
-              //   onChange={(e) => onStopPriceHandler(e.target.value)}
-            />
-          </div>
-        </div>
-      </div> */}
-
-        {/* </Space> */}
-
-        {/* <h5 className={s.subTitle}>Auction duration</h5>
-      <div className={s.auctionInputWrapper}>
-        <div
-          onFocus={auctionDateFocus}
-          onBlur={auctionDateFocus}
-          className={cn(s.amountAuction, selectAuctionDateFocus && s.amountFocus)}
-        >
-          <Input
-            className={s.auctionInput}
-            placeholder="Amount"
-            // value={dateValue}
-            // onChange={(e) => setDateValue(e.target.value)}
-          />
-        </div>
-        <div className={'custom-select custom-select--arrow-inside custom-select--small-mobile'}>
-          <Select defaultValue="days" onChange={setTimeRange}>
-            <Option value="minutes">Minute(s)</Option>
-            <Option value="hours">Hour(s)</Option>
-            <Option value="days">Day(s)</Option>
-            <Option value="months">Month(s)</Option>
-          </Select>
-        </div>
-      </div> */}
-
         <div className={s.actionBtnWrapp}>
           <button disabled={isStartAuctionBtnActive} className="btn primary" onClick={createEvent}>
-            {'Save'}
+            {'Create'}
           </button>
         </div>
-
-        {/* <div className={s.actionBtnWrapp}>
-        <button
-          className="btn primary"
-          // onClick={completeAction}
-          onClick={typeChangePrice ? saveChangesAction : completeAction}
-          disabled={isButtonActive}
-        >
-          {typeChangePrice ? 'Save changes' : 'Complete'}
-        </button>
-      </div> */}
       </div>
     </div>
   );

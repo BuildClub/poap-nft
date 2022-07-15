@@ -174,7 +174,7 @@ const ManageDrop = ({}) => {
             </div>
           </>
         )}
-        {!eventsActive && <div className={s.noImage}>There are no any events</div>}
+        {!eventsActive && <div className={s.noImage}>There are no events</div>}
       </div>
     </div>
   );

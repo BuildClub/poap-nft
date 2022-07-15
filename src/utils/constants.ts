@@ -86,7 +86,7 @@ export const WIDGET_NFT_LIST: NftList = {
 // export const LINKS_NFT_ADDRESS = '0x2c130958Af59e61f5d8a404c59494586b65F4957'; //new updated contract address address uriStorage add baseUri
 export const LINKS_NFT_ADDRESS = '0xDafeE33922AAF21DF0bE49FA44E4642d067361a0'; //new updated contract address address uriStorage add baseUri anyone can create event
 
-export const SERVER_URL = 'http://localhost:5002';
+export const BASE_URL = 'http://localhost:5002';
 
 export interface INftCard {
   amount?: string;

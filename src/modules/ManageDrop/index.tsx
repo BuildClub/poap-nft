@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Input, Select, Tabs, Tooltip, DatePicker, Space, DatePickerProps } from 'antd';
 import cn from 'classnames';
 import s from './ManageDrop.module.scss';
-import { LINKS_NFT_ADDRESS, SERVER_URL } from '@utils/constants';
+import { LINKS_NFT_ADDRESS, BASE_URL } from '@utils/constants';
 import {
   usePoapLinksSignContract,
   usePoapLinksUnsignContract,
@@ -103,10 +103,10 @@ const ManageDrop = ({}) => {
 
     try {
       await setEventMinters();
-      // const { data } = await axios.post(`${SERVER_URL}/sendmail`, {
-      //   to: emails,
-      // });
-      // console.log('Email data', data);
+      const { data } = await axios.post(`${process.env.REACT_APP_BASE_URL}/sendmail`, {
+        to: emails,
+      });
+      console.log('Email data', data);
 
       console.log('setEventMintersTx', setEventMintersTx);
     } catch (error) {

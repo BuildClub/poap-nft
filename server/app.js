@@ -10,10 +10,12 @@ dotenv.config();
 app.use(cors());
 app.use(express.json({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.send('Hello');
-});
 app.use('/sendmail', require('./routers/mail.routes'));
+
+app.use('/', express.static('build'));
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+});
 
 const PORT = process.env.PORT || 5002;
 

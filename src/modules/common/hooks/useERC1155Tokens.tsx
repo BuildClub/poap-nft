@@ -64,6 +64,7 @@ function useERC1155Tokens(address: string) {
       setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   }, [address, account]);
 

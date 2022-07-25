@@ -1,0 +1,279 @@
+.account {
+  margin-bottom: 65px;
+
+  &__inner {
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto 50px;
+  }
+
+  &__background {
+    height: 222px;
+    margin-bottom: -70px;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__avatar {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 15px;
+    border: 3px solid var(--theme-body-color);
+    border-radius: 50%;
+    background-color: var(--theme-body-color);
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      background-color: var(--theme-body-color);
+    }
+  }
+
+  &__avatarOnline {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 9px;
+      right: 16px;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--theme-body-color);
+      border-radius: 50%;
+      background: linear-gradient(180deg, #21eb66 0%, #12d583 100%);
+    }
+  }
+
+  &__name {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1;
+    color: var(--thame-text-dark-gray);
+    margin-bottom: 10px;
+  }
+
+  &__description {
+    max-width: 550px;
+    width: 100%;
+    margin: 0 auto 25px;
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--theme-text-secondary);
+  }
+
+  &__login {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 1;
+    color: $primary;
+    margin-bottom: 15px;
+  }
+
+  &__since {
+    @include flex-justify-align(center, center);
+    margin-bottom: 20px;
+
+    &Icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 5px;
+
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    &Date {
+      font-size: 14px;
+      line-height: 1;
+      color: var(--theme-text-gray);
+      margin-bottom: 0;
+    }
+  }
+
+  &__btnGroup {
+    @include flex-justify-align(center, center);
+    flex-wrap: wrap;
+  }
+
+  @include media-tablet {
+    margin-bottom: 45px;
+  }
+  @include media-mobile {
+    margin-bottom: 20px;
+    &__inner {
+      margin-bottom: 20px;
+    }
+    &__background {
+      height: 190px;
+    }
+    // &__avatar {
+    //   // width: 120px;
+    //   // height: 120px;
+    // }
+    &__avatarOnline {
+      &::after {
+        bottom: 4px;
+        right: 16px;
+        width: 16px;
+        height: 16px;
+      }
+    }
+    &__name {
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+    &__since {
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.account__stats {
+  @include flex-justify-align(center, center);
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  &Item {
+    padding: 0 29px;
+    margin-bottom: 15px;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 1px;
+      height: 25px;
+      background-color: var(--theme-border-color);
+    }
+
+    &:last-child::after {
+      display: none;
+    }
+  }
+
+  &Num {
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 1;
+    color: var(--theme-text-primary);
+    margin-bottom: 6px;
+  }
+
+  &Desc {
+    font-size: 14px;
+    line-height: 1;
+    color: var(--theme-text-gray);
+  }
+
+  @include media-low-mobile {
+    &Item {
+      padding: 0 20px;
+    }
+  }
+}
+
+.account__btnAction {
+  @include flex-align(center);
+  margin: 0 30px 15px;
+
+  button {
+    height: 40px;
+    min-height: 40px;
+    margin-right: 8px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.account__socials {
+  @include flex-align(center);
+  list-style-type: none;
+  margin: 0 30px 15px;
+  padding: 0;
+
+  &Item {
+    width: 22px;
+    height: 22px;
+    margin-right: 15px;
+    background-color: var(--thame-socials-gray);
+    overflow: hidden;
+    border-radius: 50%;
+    transition: 0.3s all;
+
+    &:hover {
+      background-color: $primaryHover;
+      transition: 0.3s all;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    & a {
+      width: 100%;
+      height: 100%;
+
+      & i {
+        position: relative;
+        top: 0;
+        font-size: 13px;
+        color: var(--theme-body-color);
+      }
+    }
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  li {
+    list-style-type: none;
+    margin: 0 4px;
+
+    a:active {
+      color: $primary;
+    }
+  }
+
+  &_active {
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+    color: $primary;
+  }
+
+  &_btn {
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--theme-border-color);
+    box-sizing: border-box;
+    border-radius: 10px;
+
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

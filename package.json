@@ -79,7 +79,7 @@
     "xlsx": "^0.18.5"
   },
   "scripts": {
-    "heroku-prebuild": "yarn install && npm run build && cp -r build/ server/build && cd server && npm install && cd .. ",
+    "heroku-postbuild": "craco build && cp -r build/ server/build && cd server && npm ci && cd .. ",
     "start": "cd server && npm run start",
     "dev": "craco start",
     "build": "craco build",

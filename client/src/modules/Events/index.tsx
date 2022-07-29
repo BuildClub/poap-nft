@@ -149,87 +149,94 @@ const CollectionAccount = () => {
     <div className={styles.account}>
       <div className="container h100">
         <section className={styles.cardCollection}>
-          {events.length > 0
-            ? events.map((item: any) => {
-                return (
-                  <li key={item._id} className={cn(styles.nftCards__item)}>
-                    {isLoading ? (
-                      <div className="skeleton">
-                        <NftImageNotFound />
-                        <br />
-                        <br />
-                        <Skeleton active />
-                      </div>
-                    ) : (
-                      <>
-                        {item.eventImage ? (
-                          <AsyncImage
-                            src={item.eventImage}
-                            alt="Image"
-                            onError={imageErrorHandler}
-                          />
-                        ) : (
+          <ul className={styles.nftCards}>
+            {events.length > 0
+              ? events.map((item: any) => {
+                  return (
+                    <li key={item._id} className={cn(styles.nftCards__item)}>
+                      {isLoading ? (
+                        <div className="skeleton">
                           <NftImageNotFound />
-                        )}
-
-                        <div className={styles.nftCards__info}>
-                          <div className={styles.nftCards__mainInfo}>
-                            {/*==========================*/}
-                            {/* Card Collection and Name */}
-                            {/*==========================*/}
-
-                            <Tooltip
-                              placement="bottomLeft"
-                              trigger={item.eventName && item.eventName.length >= 15 ? 'hover' : ''}
-                              title={item.eventName && item.eventName}
-                              overlayClassName={styles.nftCards__tooltip}
-                            >
-                              <h4 className={styles.nftCards__name}>
-                                {item.eventName && formatCollectionName(item.eventName, item._id)}
-                              </h4>
-                            </Tooltip>
-
-                            <Tooltip
-                              placement="bottomLeft"
-                              trigger={item.eventName && item.eventName.length >= 25 ? 'hover' : ''}
-                              title={item.eventName}
-                              overlayClassName={styles.nftCards__tooltip}
-                            >
-                              <div className={styles.nftCards__collection}>
-                                <p className={styles.nftCards__collectionInner}>
-                                  <span className={styles.about__row}>Description: </span>{' '}
-                                  {formatCardName(item.eventDescription)}
-                                </p>
-                              </div>
-                            </Tooltip>
-
-                            <div className={styles.btns_wrapper}>
-                              <button
-                                className="btn primary"
-                                onClick={() => approveEventHandler(item)}
-                              >
-                                Approve event
-                              </button>
-
-                              <button
-                                className="btn secondary"
-                                onClick={() => rejectEventHandler(item)}
-                              >
-                                Reject event
-                              </button>
-                            </div>
-
-                            {/*=======*/}
-                            {/* About */}
-                            {/*=======*/}
-                          </div>
+                          <br />
+                          <br />
+                          <Skeleton active />
                         </div>
-                      </>
-                    )}
-                  </li>
-                );
-              })
-            : 'There are no events for approve'}
+                      ) : (
+                        <>
+                          <div className={styles.nftCards__image}>
+                            {item.eventImage ? (
+                              <AsyncImage
+                                src={item.eventImage}
+                                alt="Image"
+                                onError={imageErrorHandler}
+                              />
+                            ) : (
+                              <NftImageNotFound />
+                            )}
+                          </div>
+                          <div className={styles.nftCards__info}>
+                            <div className={styles.nftCards__mainInfo}>
+                              {/*==========================*/}
+                              {/* Card Collection and Name */}
+                              {/*==========================*/}
+
+                              <Tooltip
+                                placement="bottomLeft"
+                                trigger={
+                                  item.eventName && item.eventName.length >= 15 ? 'hover' : ''
+                                }
+                                title={item.eventName && item.eventName}
+                                overlayClassName={styles.nftCards__tooltip}
+                              >
+                                <h4 className={styles.nftCards__name}>
+                                  {item.eventName && formatCollectionName(item.eventName, item._id)}
+                                </h4>
+                              </Tooltip>
+
+                              <Tooltip
+                                placement="bottomLeft"
+                                trigger={
+                                  item.eventName && item.eventName.length >= 25 ? 'hover' : ''
+                                }
+                                title={item.eventName}
+                                overlayClassName={styles.nftCards__tooltip}
+                              >
+                                <div className={styles.nftCards__collection}>
+                                  <p className={styles.nftCards__collectionInner}>
+                                    <span className={styles.about__row}>Description: </span>{' '}
+                                    {formatCardName(item.eventDescription)}
+                                  </p>
+                                </div>
+                              </Tooltip>
+
+                              <div className={styles.btns_wrapper}>
+                                <button
+                                  className="btn primary"
+                                  onClick={() => approveEventHandler(item)}
+                                >
+                                  Approve event
+                                </button>
+
+                                <button
+                                  className="btn secondary"
+                                  onClick={() => rejectEventHandler(item)}
+                                >
+                                  Reject event
+                                </button>
+                              </div>
+
+                              {/*=======*/}
+                              {/* About */}
+                              {/*=======*/}
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </li>
+                  );
+                })
+              : 'There are no events for approve'}
+          </ul>
         </section>
       </div>
       {/* <ModalContainer

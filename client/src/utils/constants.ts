@@ -75,8 +75,8 @@ export const CONTRACTS: Contracts = {
   },
 };
 
-// export const BASE_URL = 'http://localhost:5002';
-export const BASE_URL = 'https://nft-memo-v2.herokuapp.com';
+export const BASE_URL = 'http://localhost:5002';
+// export const BASE_URL = 'https://nft-memo-v2.herokuapp.com';
 
 export interface INftCard {
   amount?: string;

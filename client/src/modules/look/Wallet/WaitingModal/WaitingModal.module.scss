@@ -1,7 +1,7 @@
 .waiting {
   color: var(--theme-text-white);
   text-align: center;
-  height: 354px;
+  height: 394px;
   position: relative;
   z-index: 1;
 
@@ -29,8 +29,9 @@
   h5 {
     color: var(--thame-text-dark-gray);
     font-weight: 600;
-    font-size: 18px;
-    line-height: 1;
+    padding: 0 20px;
+    font-size: 16px;
+    line-height: 2;
     letter-spacing: 0.003em;
     position: relative;
     z-index: 2;

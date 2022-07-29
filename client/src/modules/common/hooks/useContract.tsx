@@ -18,9 +18,6 @@ function useContractByChainId(address: Address, ABI: any, withSignerIfPossible =
   );
 }
 
-// getSignContract
-// getUnsignContract
-
 function useContract(address: string, ABI: any, withSignerIfPossible = true): Contract {
   const { library, account } = useWeb3React();
   return getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined);

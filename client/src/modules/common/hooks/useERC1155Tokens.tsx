@@ -1,6 +1,9 @@
 import { useWeb3React } from '@web3-react/core';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { usePoapLinksSignContract } from '@modules/common/hooks/useContract';
+import {
+  usePoapLinksSignContract,
+  usePoapLinksUnsignContract,
+} from '@modules/common/hooks/useContract';
 import { buildQueryGodwoken } from '@utils/contracts';
 import { LINKS_NFT_ADDRESS } from '@utils/constants';
 
@@ -15,7 +18,7 @@ function useERC1155Tokens(address: string) {
     balanceOf: balanceOfQuery,
     uri: tokenUriQuery,
     getNftsIdsOfUser: getNftsIdsOfUserQuery,
-  } = usePoapLinksSignContract(LINKS_NFT_ADDRESS, true);
+  } = usePoapLinksUnsignContract(LINKS_NFT_ADDRESS, true);
 
   useEffect(() => {}, [address]);
 

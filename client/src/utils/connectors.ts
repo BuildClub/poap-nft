@@ -1,9 +1,6 @@
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { NetworkConnector } from '@web3-react/network-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
-// import { polyjuiceHttpProvider } from './godwoken';
-import Web3 from 'web3';
-import { Web3Provider } from '@ethersproject/providers';
 
 export const POLLING_INTERVAL = 12000;
 export const DEFAULT_CHAIN_ID = Number(process.env.REACT_APP_DEFAULT_CHAIN_ID);
@@ -14,7 +11,7 @@ export const NETWORK_URLS: { [chainId: number]: string } = {
   // @ts-ignore
   4: process.env.REACT_APP_INFURA_RINKEBY,
   // @ts-ignore
-  71401: process.env.REACT_APP_GW_POLYJUICE_RPC_URL,
+  71401: process.env.REACT_APP_GW_TESTNET_RPC_URL,
   // @ts-ignore
   71402: process.env.REACT_APP_GW_MAINNET_RPC_URL,
 };

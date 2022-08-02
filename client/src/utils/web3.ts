@@ -71,14 +71,14 @@ export const setupNetwork = async () => {
               {
                 //@ts-ignore
                 chainId: numberToHex(chainId),
-                chainName: 'Godwoken Test Network',
+                chainName: 'Godwoken Mainnet',
                 nativeCurrency: {
                   name: 'CKB',
                   symbol: 'CKB',
                   decimals: 18,
                 },
-                rpcUrls: ['https://godwoken-testnet-v1.ckbapp.dev'],
-                blockExplorerUrls: [`https://gw-explorer.nervosdao.community/`],
+                rpcUrls: ['https://v1.mainnet.godwoken.io/rpc'],
+                blockExplorerUrls: [`https://gw-mainnet-explorer.nervosdao.community/`],
               },
             ],
           });

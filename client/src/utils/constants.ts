@@ -49,34 +49,22 @@ export interface NftList {
   4: WidgetNftListTypes;
 }
 
-// export const LINKS_NFT_ADDRESS = '0xF56Fe6d2ABB24b437f600C7619F0750B4A549AE2';
-// export const LINKS_NFT_ADDRESS = '0xda82D7Ad3CE0929A40c48916E82bc433e904bFDE'; //new updated contract address address uriStorage rinkeby
-// export const LINKS_NFT_ADDRESS = '0x62c4389eeBe0DD723eB1e5f96279Fa4790293210'; //new updated contract address address uriStorage rinkeby add baseUri
-// export const LINKS_NFT_ADDRESS = '0xA0F84d20871a6774d301E220156Aaa6FF6eFeB2d'; //new updated contract address address uriStorage rinkeby add baseUri anyone can create event
-//************************** */
-
-// export const LINKS_NFT_ADDRESS = '0x73070A6e91B6cf1A07b534bB0360a775B4C1aF69';
-// export const LINKS_NFT_ADDRESS = '0xA4b86a26A1C6751D9dc320416F30ff2fcbCdC946';
-// export const LINKS_NFT_ADDRESS = '0xc91716CFa2B018F3fF22c7d5A960e894E3786c74'; //new address
-// export const LINKS_NFT_ADDRESS = '0x93CF12ffb326fdBD218B59A4bD397Aa2816872d2'; //last address
-// export const LINKS_NFT_ADDRESS = '0x54a22a1dD7b065c90e52226B88d8E57263B4a84B'; //updated contract address address
-// export const LINKS_NFT_ADDRESS = '0xE2B11581de199330FEAc377752F03E36ac2EAF85'; //new updated contract address address
-// export const LINKS_NFT_ADDRESS = '0xA5cEEf41b9dF859194c593B90D4c51A8F5a8a551'; //new updated contract address address uriStorage
-// export const LINKS_NFT_ADDRESS = '0x2c130958Af59e61f5d8a404c59494586b65F4957'; //new updated contract address address uriStorage add baseUri
-// export const LINKS_NFT_ADDRESS = '0xDafeE33922AAF21DF0bE49FA44E4642d067361a0'; //new updated contract address address uriStorage add baseUri anyone can create event
-export const LINKS_NFT_ADDRESS = '0xdcbd950F8246cD1e2f4Da41CD91219abEB823935'; //new updated contract address address uriStorage add baseUri anyone can create event only owner
+// export const LINKS_NFT_ADDRESS = '0xdcbd950F8246cD1e2f4Da41CD91219abEB823935'; //testnet
+export const LINKS_NFT_ADDRESS = '0x42B28E2Dc1843A636347C1D521d08711Ac18B2FB'; //mainnet
 
 export const CONTRACTS: Contracts = {
   Links: {
     address: {
-      71402: '0xdcbd950F8246cD1e2f4Da41CD91219abEB823935',
+      71402: '0x42B28E2Dc1843A636347C1D521d08711Ac18B2FB',
       71401: '0xdcbd950F8246cD1e2f4Da41CD91219abEB823935',
     },
   },
 };
 
-export const BASE_URL = 'http://localhost:5002';
-// export const BASE_URL = 'https://nft-memo-v2.herokuapp.com';
+// export const BASE_URL = 'http://localhost:5002';
+export const BASE_URL = 'https://nft-memo-v2.herokuapp.com';
+// export const BASE_URL = 'http://nft-memo.org';
+// export const BASE_URL = 'http://92.205.14.135';
 
 export interface INftCard {
   amount?: string;

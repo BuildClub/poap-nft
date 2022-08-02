@@ -9,7 +9,6 @@ import Events from '@modules/Events';
 import ManageDrop from '@modules/ManageDrop';
 import Web3Wrapper from '@modules/web3/containers/Web3Wrapper';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import RouteChangeTracker from '@modules/common/components/RouteChangeTracker';
 
 const modulesData = [
   { path: '/', title: 'home', component: Scan },
@@ -32,7 +31,6 @@ function App() {
       <Web3Wrapper>
         <QueryClientProvider client={queryClient}>
           <Layout>
-            <RouteChangeTracker />
             <CustomSwitch>
               {modulesData.map(({ path, title, component }) => (
                 <Route exact key={title} path={path} component={component} />

@@ -1,5 +1,3 @@
-/** @format */
-
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
@@ -13,17 +11,12 @@ app.use(express.json({ extended: true }));
 
 app.use('/sendmail', require('./routers/mail.routes'));
 
-// app.get('/test', (req, res) => {
-//   res.send('Hello world!!!');
-// });
-
 app.use('/users', require('./routers/users.routes'));
 
 app.use('/events', require('./routers/events.routes'));
 
 mongoose.connect(
   process.env.MONGODB_URL,
-  // `mongodb+srv://zeppelinua88:${process.env.MONGODB_SECRET}@cluster0.r9wqrni.mongodb.net/?retryWrites=true&w=majority`,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,

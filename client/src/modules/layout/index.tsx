@@ -8,7 +8,7 @@ import PageNotFound from '@modules/staticPages/PageNotFound';
 import { useWeb3React } from '@web3-react/core';
 import { setupNetwork } from '@utils/web3';
 
-const Layout: FC<{ children: ReactNode[] }> = ({ children }) => {
+const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   const { library } = useWeb3React();
 
   const { pathname } = useLocation();

@@ -24,8 +24,30 @@ const CollectionAccount = () => {
 
   const history = useHistory();
 
+  const fetchcCmpetitions = async () => {
+    try {
+      const { data } = await axios.get(
+        'https://cors-proxy-back.herokuapp.com/nfts?url=http://api.football-data.org/v4/competitions/',
+        {
+          headers: {
+            // Authorization: `Bearer a9c328acda904d40ad7a3260e82284a2`,
+            // Authorization: `a9c328acda904d40ad7a3260e82284a2`,
+            // 'X-Auth-Token': `Bearer a9c328acda904d40ad7a3260e82284a2`,
+            // 'X-Auth-Token': `a9c328acda904d40ad7a3260e82284a2`,
+            'X-Auth-Token': 'a9c328acda904d40ad7a3260e82284a2',
+          },
+        },
+      );
+      console.log('competitions', data);
+      // setTCompetitions(competitions)
+    } catch (error) {
+      console.log('ERROR', error);
+    }
+  };
+
   // Scroll To Top when route on this page
   useEffect(() => {
+    fetchcCmpetitions();
     window.scrollTo(0, 0);
   }, []);
 

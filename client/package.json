@@ -52,6 +52,7 @@
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "ethereumjs-tx": "^2.1.2",
+    "formik": "^2.2.9",
     "ipfs-car": "^0.7.0",
     "ipfs-http-client": "^53.0.1",
     "mime": "^3.0.0",
@@ -76,7 +77,8 @@
     "web-vitals": "^1.0.1",
     "web3": "^1.6.0",
     "web3-utils": "^1.7.4",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "craco start",

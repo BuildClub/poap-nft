@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const app = express();
+const path = require('path');
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ mongoose.connect(
 );
 
 app.use('/', express.static('build'));
-app.get('/*', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
 });
 

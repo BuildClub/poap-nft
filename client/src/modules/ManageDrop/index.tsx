@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Input, Select, Tabs, Tooltip, DatePicker, Space, DatePickerProps, Skeleton } from 'antd';
 import cn from 'classnames';
 import s from './ManageDrop.module.scss';
@@ -17,12 +17,19 @@ import axios from 'axios';
 import ModalContainer from '@modules/look/ModalContainer';
 import ErrorModal from '@modules/look/Wallet/ErrorModal';
 import WaitingModal from '@modules/look/Wallet/WaitingModal';
+import refreshIcon from '@assets/images/refresh-light.svg';
+import refreshIconDark from '@assets/images/refresh.svg';
+import AppContext from '@modules/layout/context/AppContext';
+import { ToastContainer, toast } from 'react-toastify/dist/index';
+import 'react-toastify/dist/ReactToastify.css';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
 const ManageDrop = ({}) => {
   const { account, chainId, library } = useWeb3React();
+
+  const { isLightMode } = useContext(AppContext);
 
   //@ts-ignore
   const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
@@ -74,6 +81,37 @@ const ManageDrop = ({}) => {
   );
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      if (eventsList && eventsList.length > 0 && account) {
+        let filtredEvents = eventsList.filter(
+          (item: any) =>
+            item[2].toString() !== '0' && item[4].toLowerCase() === account.toLowerCase(),
+        );
+        if (filtredEvents > 0) {
+          clearInterval(interval);
+          return;
+        }
+      }
+      refetchEventsList();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [eventsList, account]);
+
+  const handleRefresh = async () => {
+    await refetchEventsList();
+    toast.success('Events are updated', {
+      position: 'top-right',
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  useEffect(() => {
     // console.log('eventsList', eventsList);
     if (eventsList && eventsList.length > 1 && account) {
       let filtredEvents = eventsList.filter(
@@ -110,7 +148,7 @@ const ManageDrop = ({}) => {
     return false;
   }, [account, isEventOwner, users]);
 
-  const createEvent = async () => {
+  const makeDrop = async () => {
     if (users.length === 0 || !isEventOwner) return;
 
     try {
@@ -119,21 +157,15 @@ const ManageDrop = ({}) => {
       await setEventMinters();
 
       setTimeout(async () => {
-        // const { data } = await axios.post(`${process.env.REACT_APP_BASE_URL}/sendmail`, {
         const { data } = await axios.post(`${BASE_URL}/sendmail`, {
           to: emails,
           subject: 'You have received the memo nft',
           html:
             '</br > <br /> Here is the link of the memo nft : <a href="https://nft-memo-v2.herokuapp.com">Look at your nft</a><br /><br /> Best Regards.',
         });
-        // console.log('Email data', data);
         setIsWaitingModalVisible(false);
         setIsModalSalesSettings(false);
       }, 40000);
-
-      // console.log('setEventMintersTx', setEventMintersTx);
-      // setIsWaitingModalVisible(false);
-      // setIsModalSalesSettings(false);
     } catch (error) {
       setIsWaitingModalVisible(false);
       setIsModalSalesSettings(false);
@@ -198,7 +230,14 @@ const ManageDrop = ({}) => {
 
         {eventsActive && (
           <>
-            <h5 className={s.subTitle}>Select event</h5>
+            <div className={s.titleWrapper}>
+              <h5 className={s.subTitle}>Select event</h5>
+              <img
+                src={isLightMode ? refreshIconDark : refreshIcon}
+                alt="Refetch Image"
+                onClick={handleRefresh}
+              />
+            </div>
             <div className={'custom-select events'}>
               <Select defaultValue={events[0][0].toString()} onChange={(value) => setEvent(value)}>
                 {events.map((item: any) => (
@@ -235,7 +274,7 @@ const ManageDrop = ({}) => {
               />
             </div> */}
             <div className={s.actionBtnWrapp}>
-              <button disabled={isSaveBtnActive} className="btn primary" onClick={createEvent}>
+              <button disabled={isSaveBtnActive} className="btn primary" onClick={makeDrop}>
                 {'Save drop'}
               </button>
             </div>
@@ -256,6 +295,7 @@ const ManageDrop = ({}) => {
 
         {isWaitingModalVisible && <WaitingModal setIsModalVisible={setIsModalSalesSettings} />}
       </ModalContainer>
+      <ToastContainer theme="colored" />
     </div>
   );
 };

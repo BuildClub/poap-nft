@@ -3,6 +3,16 @@
   background: var(--theme-body-color);
   height: 100%;
 
+  .titleWrapper {
+    @include flex-align(center);
+    img {
+      display: block;
+      margin-left: 10px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+  }
+
   .uploadInputWrapper {
     display: flex;
     justify-content: space-between;

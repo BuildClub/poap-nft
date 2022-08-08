@@ -13,6 +13,8 @@ import AppContext from '@modules/layout/context/AppContext';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { isAddress } from '@ethersproject/address';
+import { ToastContainer, toast } from 'react-toastify/dist/index';
+import 'react-toastify/dist/ReactToastify.css';
 
 const { TextArea } = Input;
 
@@ -105,8 +107,27 @@ const CreateEvent = ({}) => {
         setIsWaitingModalVisible(false);
         setIsModalSalesSettings(false);
 
+        toast.success('Event created', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
         resetForm();
       } catch (error) {
+        toast.error('Event have not created', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         setIsWaitingModalVisible(false);
         setIsModalSalesSettings(false);
         setIsErrorModalVisible(true);
@@ -227,6 +248,7 @@ const CreateEvent = ({}) => {
           />
         )}
       </ModalContainer>
+      <ToastContainer theme="colored" />
     </div>
   );
 };

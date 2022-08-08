@@ -16,6 +16,10 @@ import WaitingModal from '@modules/look/Wallet/WaitingModal';
 import Input from 'antd/lib/input/Input';
 import axios from 'axios';
 import { BASE_URL } from '@utils/constants';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { ToastContainer, toast } from 'react-toastify/dist/index';
+import 'react-toastify/dist/ReactToastify.css';
 
 const { TabPane } = Tabs;
 
@@ -30,9 +34,6 @@ const Header = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isWaitingModalVisible, setIsWaitingModalVisible] = useState<boolean>(false);
   const [isUnstakeTab, setUnstakeTab] = useState<boolean>(false);
-
-  const [signinForm, updateSigninForm] = useState({ email: '', password: '' });
-  const [signinFormReg, updateSigninFormReg] = useState({ email: '', password: '' });
 
   const { login, logout, token } = useAuth();
 
@@ -63,43 +64,6 @@ const Header = () => {
     }
   }, [token]);
 
-  const singinBtn = async () => {
-    // console.log('signinForm.password || !signinForm.email', signinForm.password, signinForm.email);
-
-    if (!signinForm.password || !signinForm.email) {
-      console.log('Sign in error');
-      return;
-    }
-
-    const { data } = await axios.post(`${BASE_URL}/users/login`, {
-      password: signinForm.password,
-      email: signinForm.email,
-    });
-    console.log('data', data);
-
-    login(data.email, data.token, data.userId, data.isAdmin);
-    setAuthToken(data.token);
-    setIsAdmin(data.isAdmin);
-    setIsModalVisible(false);
-  };
-
-  const singupBtn = async () => {
-    if (!signinFormReg.email || !signinFormReg.password) {
-      console.log('input error');
-      return;
-    }
-    const { data } = await axios.post(`${BASE_URL}/users/register`, {
-      password: signinFormReg.password,
-      email: signinFormReg.email,
-    });
-    console.log('data', data);
-
-    login(data.email, data.token, data.userId, data.isAdmin);
-    setAuthToken(data.token);
-    setIsAdmin(data.isAdmin);
-    setIsModalVisible(false);
-  };
-
   const checkUnstakeTab = (key: string) => {
     setUnstakeTab(!isUnstakeTab);
   };
@@ -118,6 +82,102 @@ const Header = () => {
       </>
     );
   };
+
+  const {
+    handleChange: signInHandleChange,
+    handleSubmit: signInBtn,
+    touched: signInTouched,
+    resetForm,
+    errors: signInError,
+    values: signInValues,
+  } = useFormik({
+    initialValues: {
+      signInPassword: '',
+      signInEmail: '',
+    },
+    validationSchema: Yup.object({
+      signInPassword: Yup.string().label('Password').required(),
+      signInEmail: Yup.string().label('Email').email().required(),
+    }),
+    onSubmit: async () => {
+      try {
+        const { data } = await axios.post(`${BASE_URL}/users/login`, {
+          password: signInValues.signInPassword,
+          email: signInValues.signInEmail,
+        });
+        console.log('data', data);
+
+        login(data.email, data.token, data.userId, data.isAdmin);
+        setAuthToken(data.token);
+        setIsAdmin(data.isAdmin);
+        resetForm();
+        setIsModalVisible(false);
+      } catch (error) {
+        console.log('Login error', error);
+        //@ts-ignore
+        if (error.response && error.response.data && error.response.data.message) {
+          //@ts-ignore
+          toast.error(error.response.data.message, {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      }
+    },
+  });
+
+  const {
+    handleChange: signUpHandleChange,
+    handleSubmit: signUpBtn,
+    touched: signUpTouched,
+    resetForm: resetSignUpForm,
+    errors: signUpError,
+    values: signUpValues,
+  } = useFormik({
+    initialValues: {
+      signUpPassword: '',
+      signUpEmail: '',
+    },
+    validationSchema: Yup.object({
+      signUpPassword: Yup.string().label('Password').required(),
+      signUpEmail: Yup.string().label('Email').email().required(),
+    }),
+    onSubmit: async () => {
+      try {
+        const { data } = await axios.post(`${BASE_URL}/users/register`, {
+          password: signUpValues.signUpPassword,
+          email: signUpValues.signUpEmail,
+        });
+        console.log('data', data);
+
+        login(data.email, data.token, data.userId, data.isAdmin);
+        setAuthToken(data.token);
+        setIsAdmin(data.isAdmin);
+        resetSignUpForm();
+        setIsModalVisible(false);
+      } catch (error) {
+        console.log('Registration error', error);
+        //@ts-ignore
+        if (error.response && error.response.data && error.response.data.message) {
+          //@ts-ignore
+          toast.error(error.response.data.message, {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      }
+    },
+  });
 
   return (
     <>
@@ -186,66 +246,82 @@ const Header = () => {
               <h4 className={styles.stakedModal__title}>{!isUnstakeTab ? 'Sign in' : 'Sign up'}</h4>
               <Tabs defaultActiveKey="1" onChange={checkUnstakeTab}>
                 <TabPane className={styles.stakedModal__tab} tab="Sign in" key="1">
-                  <h5 className={styles.subTitle}>Email</h5>
-                  <div className={cx(styles.amount)}>
-                    <Input
-                      className={styles.amountInput}
-                      value={signinForm.email}
-                      onChange={(e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-                        updateSigninForm({ ...signinForm, email: e.target.value });
-                      }}
-                    />
-                  </div>
+                  <form onSubmit={signInBtn}>
+                    <h5 className={styles.subTitle}>Email</h5>
+                    <div className={cx(styles.amount)}>
+                      <Input
+                        className={styles.amountInput}
+                        onChange={signInHandleChange}
+                        value={signInValues.signInEmail}
+                        name="signInEmail"
+                        id="signInEmail"
+                      />
+                    </div>
+                    {signInError.signInEmail && signInTouched.signInEmail && (
+                      <span className={styles.error}>{signInError.signInEmail}</span>
+                    )}
 
-                  <h5 className={styles.subTitle}>Password</h5>
+                    <h5 className={styles.subTitle}>Password</h5>
 
-                  <div className={cx(styles.amount)}>
-                    <Input
-                      className={styles.amountInput}
-                      value={signinForm.password}
-                      onChange={(e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-                        console.log('password', e.target.value);
-                        updateSigninForm({ ...signinForm, password: e.target.value });
-                      }}
-                    />
-                  </div>
+                    <div className={cx(styles.amount)}>
+                      <Input
+                        className={styles.amountInput}
+                        onChange={signInHandleChange}
+                        value={signInValues.signInPassword}
+                        type="password"
+                        name="signInPassword"
+                        id="signInPassword"
+                      />
+                    </div>
+                    {signInError.signInPassword && signInTouched.signInPassword && (
+                      <span className={styles.error}>{signInError.signInPassword}</span>
+                    )}
 
-                  <div className={styles.actionBtnWrapp}>
-                    <button className="btn primary" onClick={singinBtn}>
-                      Login
-                    </button>
-                  </div>
+                    <div className={styles.actionBtnWrapp}>
+                      <button className="btn primary" type="submit">
+                        Login
+                      </button>
+                    </div>
+                  </form>
                 </TabPane>
                 <TabPane className={styles.stakedModal__tab} tab="Sign up" key="2">
-                  <h5 className={styles.subTitle}>Email</h5>
-                  <div className={cx(styles.amount)}>
-                    <Input
-                      className={styles.amountInput}
-                      value={signinFormReg.email}
-                      onChange={(e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-                        updateSigninFormReg({ ...signinFormReg, email: e.target.value });
-                      }}
-                    />
-                  </div>
+                  <form onSubmit={signUpBtn}>
+                    <h5 className={styles.subTitle}>Email</h5>
+                    <div className={cx(styles.amount)}>
+                      <Input
+                        className={styles.amountInput}
+                        onChange={signUpHandleChange}
+                        value={signUpValues.signUpEmail}
+                        name="signUpEmail"
+                        id="signUpEmail"
+                      />
+                    </div>
+                    {signUpError.signUpEmail && signUpTouched.signUpEmail && (
+                      <span className={styles.error}>{signUpError.signUpEmail}</span>
+                    )}
 
-                  <h5 className={styles.subTitle}>Password</h5>
+                    <h5 className={styles.subTitle}>Password</h5>
 
-                  <div className={cx(styles.amount)}>
-                    <Input
-                      className={styles.amountInput}
-                      value={signinFormReg.password}
-                      onChange={(e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-                        console.log('password', e.target.value);
-                        updateSigninFormReg({ ...signinFormReg, password: e.target.value });
-                      }}
-                    />
-                  </div>
+                    <div className={cx(styles.amount)}>
+                      <Input
+                        className={styles.amountInput}
+                        onChange={signUpHandleChange}
+                        value={signUpValues.signUpPassword}
+                        type="password"
+                        name="signUpPassword"
+                        id="signUpPassword"
+                      />
+                    </div>
+                    {signUpError.signUpPassword && signUpTouched.signUpPassword && (
+                      <span className={styles.error}>{signUpError.signUpPassword}</span>
+                    )}
 
-                  <div className={styles.actionBtnWrapp}>
-                    <button className="btn primary" onClick={singupBtn}>
-                      Sign Up
-                    </button>
-                  </div>
+                    <div className={styles.actionBtnWrapp}>
+                      <button className="btn primary" type="submit">
+                        Sign Up
+                      </button>
+                    </div>
+                  </form>
                 </TabPane>
               </Tabs>
             </div>
@@ -262,6 +338,7 @@ const Header = () => {
           />
         </>
       )}
+      <ToastContainer theme="colored" />
     </>
   );
 };

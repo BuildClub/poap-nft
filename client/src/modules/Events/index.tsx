@@ -14,6 +14,8 @@ import AppContext from '@modules/layout/context/AppContext';
 import NftImageNotFound from '@modules/common/components/NftImageNotFound';
 import NftImageSource from '@modules/common/components/NftImageSource';
 import AsyncImage from '@modules/common/components/AsyncImage';
+import { ToastContainer, toast } from 'react-toastify/dist/index';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CollectionAccount = () => {
   const { address } = useParams<{ address: string }>();
@@ -95,54 +97,98 @@ const CollectionAccount = () => {
   };
 
   const approveEventHandler = async (event: any) => {
-    const { data } = await axios.post(
-      `${BASE_URL}/events/createEvent`,
-      {
-        eventName: event.eventName,
-        eventDescription: event.eventDescription,
-        eventUri: event.eventUri,
-        email: event.email,
-        eventId: event._id,
-        ownerAddress: event.ownerAddress,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
+    try {
+      const { data } = await axios.post(
+        `${BASE_URL}/events/createEvent`,
+        {
+          eventName: event.eventName,
+          eventDescription: event.eventDescription,
+          eventUri: event.eventUri,
+          email: event.email,
+          eventId: event._id,
+          ownerAddress: event.ownerAddress,
         },
-      },
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        },
+      );
 
-    console.log('data', data);
+      console.log('data', data);
 
-    const { data: mailData } = await axios.post(`${BASE_URL}/sendmail`, {
-      to: event.email,
-      subject: 'Nft-Memo event',
-      html:
-        '</br > <br /> You event has been approved. The event’s NFT drop will appear in the “Manage Drop” tab very soon. ',
-    });
+      const { data: mailData } = await axios.post(`${BASE_URL}/sendmail`, {
+        to: event.email,
+        subject: 'Nft-Memo event',
+        html:
+          '</br > <br /> You event has been approved. The event’s NFT drop will appear in the “Manage Drop” tab very soon. ',
+      });
 
-    console.log('mailData', mailData);
+      console.log('mailData', mailData);
 
-    getEvents();
+      getEvents();
+
+      toast.success('Event approved', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } catch (error) {
+      toast.error('Event not approved', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
 
   const rejectEventHandler = async (event: any) => {
-    const { data } = await axios.delete(`${BASE_URL}/events/${event._id}`, {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
+    try {
+      const { data } = await axios.delete(`${BASE_URL}/events/${event._id}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
-    console.log('delete', data);
+      console.log('delete', data);
 
-    const { data: mailData } = await axios.post(`${BASE_URL}/sendmail`, {
-      to: event.email,
-      subject: 'Nft-Memo event',
-      html: '</br > <br /> Your request to create an event has been declined>',
-    });
-    console.log('mailData', mailData);
+      const { data: mailData } = await axios.post(`${BASE_URL}/sendmail`, {
+        to: event.email,
+        subject: 'Nft-Memo event',
+        html: '</br > <br /> Your request to create an event has been declined>',
+      });
+      console.log('mailData', mailData);
 
-    getEvents();
+      getEvents();
+
+      toast.success('Event rejected', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } catch (error) {
+      toast.success('Something goes wrong', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
 
   return (
@@ -239,6 +285,7 @@ const CollectionAccount = () => {
           </ul>
         </section>
       </div>
+      <ToastContainer theme="colored" />
       {/* <ModalContainer
                     className="Modal-container padding-reset"
                     isVisible={isModalVisible}

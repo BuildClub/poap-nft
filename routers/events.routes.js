@@ -85,7 +85,7 @@ router.post('/createEvent', isAuth, isAdmin, async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.status(500).send({ message: 'Something went wrong' });
+    res.status(500).send({ message: 'Something went wrong', error: err });
   }
 });
 

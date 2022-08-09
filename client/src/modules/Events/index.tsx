@@ -138,6 +138,7 @@ const CollectionAccount = () => {
         progress: undefined,
       });
     } catch (error) {
+      console.log('approve event error', error);
       toast.error('Event not approved', {
         position: 'top-right',
         autoClose: 5000,

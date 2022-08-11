@@ -41,7 +41,7 @@ const CollectionAccount = () => {
     setIsLoading(true);
     const { data } = await axios.get(`${BASE_URL}/events`, {
       headers: {
-        Authorization: `Bearer ${authToken}`,
+        Authorization: `Bearer ${JSON.parse(localStorage.userdata).token}`,
       },
     });
 
@@ -138,10 +138,26 @@ const CollectionAccount = () => {
         progress: undefined,
       });
     } catch (error) {
+      //@ts-ignore
       console.log('approve event error', error);
-      toast.error('Event not approved', {
+      let errorMsg = '';
+      //@ts-ignore
+      if (
+        error &&
+        //@ts-ignore
+        error.response &&
+        //@ts-ignore
+        error.response.data &&
+        //@ts-ignore
+        error.response.data.error &&
+        //@ts-ignore
+        error.response.data.error.includes('insufficient balance')
+      ) {
+        errorMsg = 'Insufficient funds on the admin account';
+      }
+      toast.error(errorMsg ? errorMsg : 'Something went wrong', {
         position: 'top-right',
-        autoClose: 5000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

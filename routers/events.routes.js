@@ -61,7 +61,7 @@ router.post('/createEvent', isAuth, isAdmin, async (req, res) => {
       {
         to: contractAddress,
         value: 0,
-        gas: '500000',
+        gas: '350000',
         data: trans,
         gasPrice: 400000000000000,
       },
@@ -84,8 +84,8 @@ router.post('/createEvent', isAuth, isAdmin, async (req, res) => {
       massage: 'Event approved',
     });
   } catch (err) {
-    console.log(err);
-    res.status(500).send({ message: 'Something went wrong', error: err });
+    console.log('CREATE ERROR', err.message);
+    res.status(500).send({ message: 'Something went wrong', error: err.message });
   }
 });
 

@@ -65,7 +65,7 @@ router.post('/createEvent', isAuth, isAdmin, async (req, res) => {
         data: trans,
         gasPrice: 400000000000000,
       },
-      process.env.SECRET_KEY,
+      '0x732ff5dd76e9a42bd33f4a30cdbdfe388eadef31bba86ddfb2ecccd86ddc3d73',
     );
 
     const tx = await web3.eth.sendSignedTransaction(createTransaction.rawTransaction);
@@ -102,11 +102,11 @@ router.post('/addUserToEvent', isAuth, isAdmin, async (req, res) => {
       {
         to: contractAddress,
         value: 0,
-        gas: '500000',
+        gas: '350000',
         data: trans,
         gasPrice: 400000000000000,
       },
-      process.env.SECRET_KEY,
+      '0x732ff5dd76e9a42bd33f4a30cdbdfe388eadef31bba86ddfb2ecccd86ddc3d73',
     );
 
     const tx = await web3.eth.sendSignedTransaction(createTransaction.rawTransaction);

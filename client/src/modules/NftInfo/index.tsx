@@ -21,6 +21,7 @@ import { useQuery } from 'react-query';
 import NftImageSource from '@modules/common/components/NftImageSource';
 import ErrorModal from '@modules/look/Wallet/ErrorModal';
 import { COLLECTION_NAME_KEY } from '@utils/queryKeys';
+import AsyncImage from '@modules/common/components/AsyncImage';
 
 const Nft = () => {
   const { address, id } = useParams<{ address: string; id: string }>();
@@ -67,6 +68,10 @@ const Nft = () => {
   // For Example variable
   const nftAuthor = '';
 
+  const imageErrorHandler = () => {
+    console.log('Image error');
+  };
+
   return (
     <>
       {isLoading ? (
@@ -80,7 +85,7 @@ const Nft = () => {
           <section className={s.nftInfo__card}>
             <aside className={s.nftInfo__cardImage}>
               {imgUri ? (
-                <NftImageSource source={imgUri} controls={true} autoPlay={true} muted={false} />
+                <AsyncImage src={imgUri} alt="Image" onError={imageErrorHandler} />
               ) : (
                 <div className={s.nftInfo__cardImageNotFound}>
                   <NftImageNotFound />

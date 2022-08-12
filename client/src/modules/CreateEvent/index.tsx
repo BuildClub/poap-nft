@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Input } from 'antd';
 import cn from 'classnames';
 import s from './CreateEvent.module.scss';
@@ -20,9 +20,20 @@ const { TextArea } = Input;
 
 const CreateEvent = ({}) => {
   const { authToken } = useContext(AppContext);
+  const { library, account } = useWeb3React();
 
-  //@ts-ignore
-  const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
+  const client = ipfsHttpClient({
+    host: 'ipfs.infura.io',
+    port: 5001,
+    protocol: 'https',
+    headers: {
+      authorization:
+        'Basic ' +
+        Buffer.from(
+          '2DFiT3mPc7k4X4iyUA29ClV8YU8' + ':' + '8e0ab35d42b46d27db76ebc3bfb5125f',
+        ).toString('base64'),
+    },
+  });
 
   const [isModalSalesSettings, setIsModalSalesSettings] = useState<boolean>(false);
   const [isErrorModalVisible, setIsErrorModalVisible] = useState<boolean>(false);
@@ -60,7 +71,7 @@ const CreateEvent = ({}) => {
       title: Yup.string().label('Title').required(),
       description: Yup.string().label('Description').required(),
       email: Yup.string().email().required(),
-      img: Yup.mixed().required('Image is required'),
+      img: Yup.string().required('Image is required'),
       address: Yup.string()
         .label('Wallet address')
         .required()
@@ -138,15 +149,28 @@ const CreateEvent = ({}) => {
 
   const setImage = async (e: any) => {
     const file = e.target.files[0];
+
     try {
       const added = await client.add(file);
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+
+      const url = `https://nft-memo.infura-ipfs.io/ipfs/${added.path}`;
 
       setFieldValue('img', url);
     } catch (error) {
       console.log('Error uploading file:', error);
     }
   };
+
+  // useEffect(() => {
+  //   async function getBal() {
+  //     let balance = await library.getBalance('0x2dA4a1f1cBdfa7F1D4E49c1db5d1AeE10d78A814');
+  //     console.log('BALANCE', balance);
+  //     console.log('BALANCE QTY', balance.toString());
+  //   }
+  //   if (library) {
+  //     getBal();
+  //   }
+  // }, [library]);
 
   return (
     <div className="container">

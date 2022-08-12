@@ -195,8 +195,9 @@ export const getAddressByChainId = (address: Address, chainId: number | undefine
 // }
 
 export const resolveLink = (url: string) => {
-  if (!url || !url.includes('ipfs://')) return url;
-  return url.replace('ipfs://', `${process.env.REACT_APP_DEFAULT_IPFS_NODE_URL}`);
+  if (!url || !url.includes('https://ipfs.infura.io/ipfs/')) return url;
+  return url.replace('https://ipfs.infura.io/ipfs/', `https://nft-memo.infura-ipfs.io/ipfs/`);
+  // return url.replace('https://ipfs.infura.io/ipfs/', `${process.env.REACT_APP_IPFS_NODE_URL}/`);
 };
 
 export const ipfsLinkError = (uri: string | undefined) => {

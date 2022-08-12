@@ -1,4 +1,4 @@
-import { resolveLink } from '@utils/index';
+import { ipfsLinkError, resolveLink } from '@utils/index';
 import { useEffect, useState } from 'react';
 
 function useNftMetadataWithInfura(tokenUri: string = '') {
@@ -17,9 +17,8 @@ function useNftMetadataWithInfura(tokenUri: string = '') {
       setIsLoading(true);
 
       // TODO a better backend
-      const response = await fetch(
-        'https://cors-proxy-back.herokuapp.com/nfts?url=' + resolveLink(tokenUri),
-      );
+      //@ts-ignore
+      const response = await fetch(resolveLink(tokenUri));
       const res = await response.json();
 
       if (res.detail || res.error) {
@@ -30,7 +29,9 @@ function useNftMetadataWithInfura(tokenUri: string = '') {
       }
 
       if (res.image) {
-        setImgUri(resolveLink(res.image));
+        console.log('res.image', res.image);
+
+        setImgUri(res.image);
       } else setImgUri('');
 
       if (res.name) {

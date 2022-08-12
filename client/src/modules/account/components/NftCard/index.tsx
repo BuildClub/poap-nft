@@ -18,6 +18,7 @@ import NftImageSource from '@modules/common/components/NftImageSource';
 import ErrorModal from '@modules/look/Wallet/ErrorModal';
 import { INftCard } from '@utils/constants';
 import { COLLECTION_NAME_KEY } from '@utils/queryKeys';
+import AsyncImage from '@modules/common/components/AsyncImage';
 
 const NftCard: FC<{
   userCard: INftCard;
@@ -85,6 +86,10 @@ const NftCard: FC<{
     setIsErrorModalVisible(false);
   }, []);
 
+  const imageErrorHandler = () => {
+    console.log('Image error');
+  };
+
   return (
     <>
       <li className={cx(styles.nftCards__item)}>
@@ -102,7 +107,7 @@ const NftCard: FC<{
               className={cx(!imgUri && styles.nftCards__noImage, styles.nftCards__image)}
             >
               {imgUri ? (
-                <NftImageSource source={imgUri} controls={false} autoPlay={true} muted={true} />
+                <AsyncImage src={imgUri} alt="Image" onError={imageErrorHandler} />
               ) : (
                 <NftImageNotFound />
               )}

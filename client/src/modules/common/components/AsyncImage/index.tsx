@@ -1,5 +1,6 @@
 import { ipfsLinkError } from '@utils/index';
 import { useEffect, useRef, useState } from 'react';
+import NftImageNotFound from '../NftImageNotFound';
 
 interface Iimage {
   src: string | undefined;
@@ -46,7 +47,7 @@ const AsyncImage = (props: Iimage) => {
   if (isFallbackNode && !isImageLoaded) {
     return <img src={ipfsLinkError(props.src)} alt={props.alt} onError={props.onError} />;
   }
-  return <img {...props} />;
+  return <NftImageNotFound />;
 };
 
 export default AsyncImage;

@@ -161,7 +161,7 @@ const ManageDrop = ({}) => {
           to: emails,
           subject: 'You have received the memo nft',
           html:
-            '</br > <br /> Here is the link of the memo nft : <a href="https://nft-memo-v2.herokuapp.com">Look at your nft</a><br /><br /> Best Regards.',
+            '</br > <br /> Here is the link of the memo nft : <a href="https://nft-memo.org">Look at your nft</a><br /><br /> Best Regards.',
         });
         setIsWaitingModalVisible(false);
         setIsModalSalesSettings(false);

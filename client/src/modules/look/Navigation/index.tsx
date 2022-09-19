@@ -52,6 +52,16 @@ const Navigation = ({ themeMode }: NavigationProps) => {
             Manage drop
           </NavLink>
         </li>
+        <li>
+          <NavLink
+            style={(isActive) => ({
+              color: isActive ? '#98c063' : '',
+            })}
+            to="/userNfts"
+          >
+            Explore Collection
+          </NavLink>
+        </li>
         {isAdmin && (
           <li>
             <NavLink

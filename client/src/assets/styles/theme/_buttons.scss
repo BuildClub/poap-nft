@@ -52,8 +52,9 @@
   }
 
   &.secondary {
-    color: #1c1c1c;
-    background: $secondary;
+    color: $primary;
+    background: transparent;
+    border: 1px solid $primary;
   }
 
   &.primary {

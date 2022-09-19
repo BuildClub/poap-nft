@@ -42,7 +42,13 @@ async function resetPermissions(connector: InjectedConnector) {
   });
 }
 
-const WalletConnect = ({ big = false }: { big?: boolean }) => {
+const WalletConnect = ({
+  big = false,
+  isWalletBtn = false,
+}: {
+  big?: boolean;
+  isWalletBtn?: boolean;
+}) => {
   const history = useHistory();
   const [isInitializingVisible, setIsInitializingVisible] = useState(false);
   const [pendingWallet, setPendingWallet] = useState<AbstractConnector | undefined>();
@@ -206,7 +212,13 @@ const WalletConnect = ({ big = false }: { big?: boolean }) => {
           </>
         ) : (
           <button
-            className={cn(`btn primary ${big && 'explore'}`, styles.btnConnect)}
+            className={cn(
+              big && `btn`,
+              `primary`,
+              big && 'explore',
+              styles.btnConnect,
+              isWalletBtn && styles.walletBtn,
+            )}
             onClick={() => setIsWalletModalVisible(true)}
           >
             {big && 'Explore my collection'}
@@ -221,9 +233,9 @@ const WalletConnect = ({ big = false }: { big?: boolean }) => {
         handleCancel={() => setIsWalletModalVisible(false)}
         width={468}
       >
-        <div className={cn(styles.modal, 'bg-pattern-2')}>
-          <span className={cn(styles.statusIcon, 'status-icon-pattern-2')}></span>
+        <div className={cn(styles.modal)}>
           <h4 className={styles.modal__title}>Select a wallet</h4>
+          <span className={cn(styles.statusIcon, 'status-icon-pattern-2')}></span>
           <ul className={styles.walletList}>
             {WALLETS.map(({ name, icon, walletConnector }) => {
               if (isMobile && name === 'Metamask') return;

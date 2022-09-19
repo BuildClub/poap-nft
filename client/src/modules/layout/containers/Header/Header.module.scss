@@ -4,8 +4,8 @@
   left: 0;
   top: 0;
   z-index: 1200;
-  background: var(--theme-body-color);
-  border-bottom: 1px solid var(--theme-border-color);
+  // background: var(--theme-body-color);
+  // border-bottom: 1px solid var(--theme-border-color);
 
   &__fixed {
     position: fixed;
@@ -391,7 +391,7 @@
     .ant-tabs-bottom > .ant-tabs-nav::before,
     .ant-tabs-top > div > .ant-tabs-nav::before,
     .ant-tabs-bottom > div > .ant-tabs-nav::before {
-      border-color: var(--theme-border-color);
+      border-color: #c4c4c4;
     }
 
     .ant-tabs-ink-bar {
@@ -417,7 +417,7 @@
       left: auto;
       top: 0;
       width: 600px;
-      border-top: 1px solid var(--theme-border-color);
+      border-top: 1px solid #c4c4c4;
     }
 
     .ant-tabs {
@@ -506,4 +506,65 @@
 .error {
   color: $pink !important;
   text-align: center;
+}
+
+.loginBtn,
+.loginBtn:hover,
+.loginBtn:focus,
+.loginBtn:active {
+  width: 92px;
+  height: 43px;
+  border: 1px solid #45c98f;
+  border-radius: 8px;
+  background: transparent;
+
+  font-family: 'Chillax';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 120%;
+  color: #45c98f;
+}
+
+input[type='checkbox'] {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+  &:checked + label:after {
+    left: calc(100% - 5px);
+    transform: translateX(-100%);
+  }
+}
+
+.switchLabel {
+  cursor: pointer;
+  display: block;
+  position: relative;
+  width: 54px;
+  height: 27px;
+  background: var(--theme-switch-bg);
+  border-radius: 16px;
+  margin-right: 30px;
+  &:after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 5px;
+    width: 19px;
+    height: 19px;
+    background: #45c98f;
+    transition: 0.3s;
+    border-radius: 50%;
+  }
+}
+
+.switchImgLight {
+  position: absolute;
+  left: 7px;
+  top: 4px;
+}
+.switchImgDark {
+  position: absolute;
+  right: 10px;
+  top: 8px;
 }

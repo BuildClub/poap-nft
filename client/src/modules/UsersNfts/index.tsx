@@ -5,11 +5,13 @@ import { useERC1155Tokens } from '@modules/common/hooks';
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
+import { WalletConnect } from '@modules/look/Wallet';
 
 const CollectionAccount = () => {
   const { address } = useParams<{ address: string }>();
   const [nfts, setNfts] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { chainId, account } = useWeb3React();
 
   // Scroll To Top when route on this page
   useEffect(() => {
@@ -28,7 +30,13 @@ const CollectionAccount = () => {
     }
   }, [allNfts, allNftsTotal]);
 
-  return (
+  return !account ? (
+    <div className={styles.account}>
+      <div className="container h100">
+        <section className={styles.cardCollection}>{!account && <WalletConnect big />}</section>
+      </div>
+    </div>
+  ) : (
     <div className={styles.account}>
       <div className="container h100">
         <section className={styles.cardCollection}>

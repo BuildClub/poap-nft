@@ -1,7 +1,8 @@
 .Modal-container {
   border-radius: 20px;
   overflow: hidden;
-  border: 1px solid var(--theme-border-color);
+  border: none;
+  // border: 1px solid var(--theme-border-color);
   padding: 0;
 
   &.No-border-title {
@@ -16,7 +17,7 @@
 
   .ant-modal-header {
     padding: 0;
-    background-color: var(--theme-modal-bg);
+    background-color: var(--theme-body-color);
     border-bottom: 1px solid var(--theme-border-color);
   }
 
@@ -55,9 +56,10 @@
   }
 }
 
-.ant-modal-mask {
-  background: rgba(34, 18, 71, 0.3);
-}
+// .ant-modal-mask {
+//   // background: rgba(34, 18, 71, 0.3);
+//   background: rgba(69, 201, 143, 0.1);
+// }
 
 // Any type: Solid Background
 .Modal-container.solid-bg {
@@ -104,7 +106,7 @@
 .status-icon-pattern-1,
 .status-icon-pattern-2 {
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: 50%;
   background-position: center;
 }
 
@@ -117,9 +119,9 @@
 }
 
 .status-icon-pattern-2 {
-  background-image: url('../../../assets/images/status_icon_dark--pattern2.png');
+  background-image: url('../../../assets/images/wallet-img.svg');
 }
 
 .light-mode .status-icon-pattern-2 {
-  background-image: url('../../../assets/images/status_icon_white--pattern2.png');
+  background-image: url('../../../assets/images/wallet-img.svg');
 }

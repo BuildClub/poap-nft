@@ -13,9 +13,9 @@ $mobile-breackpoint: 1024px;
 $tablet-breackpoint: 1310px;
 
 // Colors
-$primary: #98c063;
+$primary: #45c98f;
 // $primary: #ac28f5;
-$primaryHover: #b1cf8a;
+$primaryHover: #4aca93;
 // $primaryHover: #c55fff;
 $secondary: #ccff74;
 $success: #8ad52a;
@@ -36,7 +36,8 @@ $gradient-pink: linear-gradient(180deg, #fdbd91 0%, #f66daf 100%);
 $gradient-green: linear-gradient(180deg, #beec82 0%, #7bc719 100%);
 
 :root {
-  --theme-body-color: #160e24;
+  --theme-body-color: #262626;
+  --theme-footer-color: #242424;
   --theme-card-color: #181a1e;
   --thame-card-shadow: transparent;
   --theme-border-color: #142149;
@@ -66,10 +67,12 @@ $gradient-green: linear-gradient(180deg, #beec82 0%, #7bc719 100%);
   --theme-nfts-fade-light: rgba(5, 5, 5, 0.1);
   --theme-nfts-fade: rgba(5, 5, 5, 0.95);
   --theme-nfts-fade-footer: #050505;
+  --theme-switch-bg: #383838;
 }
 
 .light-mode {
   --theme-body-color: rgb(231, 226, 240);
+  --theme-footer-color: #fafafa;
   --theme-card-color: #ffffff;
   --thame-card-shadow: #c5c5c5;
   --theme-border-color: #e8e8e8;
@@ -98,4 +101,5 @@ $gradient-green: linear-gradient(180deg, #beec82 0%, #7bc719 100%);
   --theme-nfts-fade-light: rgba(241, 238, 238, 0.1);
   --theme-nfts-fade: rgba(221, 217, 217, 0.95);
   --theme-nfts-fade-footer: #eee7e7;
+  --theme-switch-bg: #eaeaea;
 }

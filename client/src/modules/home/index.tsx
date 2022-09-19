@@ -57,7 +57,6 @@ const Home = () => {
             {[...Array(4).keys()].map((item) => (
               <div key={item} className={styles.nft}>
                 <img src={nftImg} alt="" />
-                {item}
               </div>
             ))}
           </div>

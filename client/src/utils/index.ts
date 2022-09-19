@@ -15,6 +15,10 @@ export const formatAddress = (address: string) => {
   return address.length >= 10 ? `${address.slice(0, 5)}...${address.slice(-4)}` : address;
 };
 
+export const formatFileName = (name: string) => {
+  return name.length >= 30 ? `${name.slice(0, 29)}...${name.slice(-4)}` : name;
+};
+
 export const formatNftId = (address: string) => `${address.slice(0, 5)}...`;
 
 export const toK = (num: number) => Numeral(num).format('0.[000000]a').toUpperCase();

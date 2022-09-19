@@ -35,6 +35,7 @@ const ManageDrop = ({}) => {
   const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
 
   const [fileUrl, setFileUrl] = useState<string>('');
+  const [fileName, setFileName] = useState<string>('');
   const [eventId, setEventId] = useState<number | null>(null);
   const [eventsActive, setEventsActive] = useState<boolean>(false);
   const [isEventOwner, setIsEventOwner] = useState<boolean>(false);
@@ -189,6 +190,8 @@ const ManageDrop = ({}) => {
       return;
     }
 
+    setFileName(file.name);
+
     setFileError(false);
 
     reader.onload = (evt) => {
@@ -230,25 +233,44 @@ const ManageDrop = ({}) => {
 
         {eventsActive && (
           <>
-            <div className={s.titleWrapper}>
-              <h5 className={s.subTitle}>Select event</h5>
-              <img
-                src={isLightMode ? refreshIconDark : refreshIcon}
-                alt="Refetch Image"
-                onClick={handleRefresh}
-              />
-            </div>
-            <div className={'custom-select events'}>
-              <Select defaultValue={events[0][0].toString()} onChange={(value) => setEvent(value)}>
-                {events.map((item: any) => (
-                  <Option value={item[2].toString()} key={item[2].toString()}>
-                    {item[0].toString()}
-                  </Option>
-                ))}
-              </Select>
-            </div>
+            <div className={s.inputs}>
+              <div className={s.input}>
+                <fieldset className={cn(s.fakeBorder)}>
+                  <legend className={s.fakeBorder__text}>Select event</legend>
+                  <div className={'custom-select events'}>
+                    <Select
+                      defaultValue={events[0][0].toString()}
+                      onChange={(value) => setEvent(value)}
+                    >
+                      {events.map((item: any) => (
+                        <Option value={item[2].toString()} key={item[2].toString()}>
+                          {item[0].toString()}
+                        </Option>
+                      ))}
+                    </Select>
+                  </div>
+                </fieldset>
+              </div>
 
-            <h5 className={s.subTitle}>
+              <div className={s.input}>
+                <fieldset className={cn(s.fakeBorder, s.file)}>
+                  <legend className={s.fakeBorder__text}>Upload users addresses and emails</legend>
+                  <label className={s.fileBtn} htmlFor="table">
+                    Browse
+                  </label>
+                  <span className={s.fileName}>{fileName}</span>
+                  <input
+                    className={cn(s.amountInput, s.invisible)}
+                    type="file"
+                    id="table"
+                    onChange={onChange}
+                  />
+                </fieldset>
+
+                {fileError && <div className={s.error}>File must have xlsx extension</div>}
+              </div>
+
+              {/* <h5 className={s.subTitle}>
               Upload users addresses and emails{' '}
               <Tooltip
                 placement="bottomLeft"
@@ -260,19 +282,13 @@ const ManageDrop = ({}) => {
               >
                 <i className={'icon-exclamation'} />
               </Tooltip>
-            </h5>
-
-            <div className={cn(s.amount)}>
-              <Input className={s.amountInput} type="file" onChange={onChange} />
+            </h5> */}
             </div>
-            {fileError && <div className={s.error}>File must have xlsx extension</div>}
-            {/* <div className={cn(s.amount)}>
-              <TextArea
-                className={s.areaInput}
-                value={users}
-                onChange={(e) => setUsers(e.target.value)}
-              />
-            </div> */}
+            <div>
+              *Please upload an excel sheet field in the following format Column 1 - event
+              attendee’s email, Column 2 - Event attendee’s wallet addresses
+            </div>
+
             <div className={s.actionBtnWrapp}>
               <button disabled={isSaveBtnActive} className="btn primary" onClick={makeDrop}>
                 {'Save drop'}

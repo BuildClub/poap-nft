@@ -2,13 +2,17 @@ import { ChangeEvent, useCallback, useContext, useEffect, useState } from 'react
 import { Link } from 'react-router-dom';
 import { Button, Tabs } from 'antd';
 import AppContext from '@modules/layout/context/AppContext';
-import Logo from '@assets/images/logo/logo.png';
+import Logo from '@assets/images/logo/new-logo.svg';
+import LogoDark from '@assets/images/logo/new-logo-dark.svg';
 import WalletConnect from '@modules/look/Wallet/WalletConnect';
 import Navigation from '@modules/look/Navigation';
 import { useAuth, useMediaQuery } from '@modules/common/hooks';
 import cx from 'classnames';
 import themeModeIcon from '@assets/images/mode.png';
 import themeModeIconLight from '@assets/images/mode_light.png';
+
+import lightIcon from '@assets/images/switchTheme/light.png';
+import darkIcon from '@assets/images/switchTheme/dark.png';
 
 import styles from './Header.module.scss';
 import ModalContainer from '@modules/look/ModalContainer';
@@ -71,14 +75,21 @@ const Header = () => {
   const ToggleThemeMode = () => {
     return (
       <>
-        <a className={styles.themeSelector} onClick={SwitchLightMode}>
+        <input
+          defaultChecked={isLightMode}
+          className={styles.switchInput}
+          type="checkbox"
+          id="switch"
+        />
+        <label className={styles.switchLabel} onClick={SwitchLightMode} htmlFor="switch">
           <img
-            src={isLightMode ? themeModeIconLight : themeModeIcon}
-            width="24"
-            height="24"
+            className={cx(isLightMode ? styles.switchImgLight : styles.switchImgDark)}
+            src={isLightMode ? lightIcon : darkIcon}
+            width={isLightMode ? '16' : '12'}
+            height={isLightMode ? '16' : '12'}
             alt="Thame Mode Icon"
           />
-        </a>
+        </label>
       </>
     );
   };
@@ -201,7 +212,7 @@ const Header = () => {
             )}
             <div className={styles.header__logo}>
               <Link to="/">
-                <img src={Logo} alt="" />
+                <img src={isLightMode ? LogoDark : Logo} alt="" />
               </Link>
             </div>
             {!isBreakpoint && <Navigation />}
@@ -209,7 +220,7 @@ const Header = () => {
             {!isBreakpoint && <ToggleThemeMode />}
 
             <div>
-              <WalletConnect />
+              <WalletConnect isWalletBtn />
             </div>
 
             {isBreakpoint && (
@@ -224,7 +235,7 @@ const Header = () => {
             )}
 
             <>
-              <Button onClick={handleAuth} className="btn-primary">
+              <Button onClick={handleAuth} className={styles.loginBtn}>
                 {isAuthorize ? 'Logout' : 'Login'}
               </Button>
             </>

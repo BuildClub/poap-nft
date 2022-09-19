@@ -92,101 +92,26 @@ const NftCard: FC<{
 
   return (
     <>
-      <li className={cx(styles.nftCards__item)}>
-        {isLoading ? (
-          <div className="skeleton">
-            <NftImageNotFound />
-            <br />
-            <br />
-            <Skeleton active />
+      <li className={styles.main}>
+        <div className={styles.nftCards__image}>
+          <div className={styles.nftCards__imageWrapper}>
+            {/* {item.eventImage ? (
+                            <AsyncImage
+                              src={item.eventImage}
+                              alt="Image"
+                              onError={imageErrorHandler}
+                            />
+                          ) : (
+                            <NftImageNotFound />
+                          )} */}
+            {imgUri ? (
+              <AsyncImage src={imgUri} alt="Image" onError={imageErrorHandler} />
+            ) : (
+              <NftImageNotFound />
+            )}
           </div>
-        ) : (
-          <>
-            <Link
-              to={`/nfts/${userCard.token_address}/${userCard.token_id}`}
-              className={cx(!imgUri && styles.nftCards__noImage, styles.nftCards__image)}
-            >
-              {imgUri ? (
-                <AsyncImage src={imgUri} alt="Image" onError={imageErrorHandler} />
-              ) : (
-                <NftImageNotFound />
-              )}
-            </Link>
-            <div className={styles.nftCards__info}>
-              <div className={styles.nftCards__mainInfo}>
-                {/*==========================*/}
-                {/* Card Collection and Name */}
-                {/*==========================*/}
-
-                <Tooltip
-                  placement="bottomLeft"
-                  trigger={collectionName && collectionName.length >= 15 ? 'hover' : ''}
-                  title={
-                    collectionName && collectionName + ' ' + '#' + formatAddress(userCard.token_id)
-                  }
-                  overlayClassName={styles.nftCards__tooltip}
-                >
-                  <h4 className={styles.nftCards__name}>
-                    <Link to={`/nfts/${userCard.token_address}/${userCard.token_id}`}>
-                      {collectionName && formatCollectionName(collectionName, userCard.token_id)}
-                    </Link>
-                  </h4>
-                </Tooltip>
-
-                <Tooltip
-                  placement="bottomLeft"
-                  trigger={nftName && nftName.length >= 25 ? 'hover' : ''}
-                  title={nftName}
-                  overlayClassName={styles.nftCards__tooltip}
-                >
-                  <div className={styles.nftCards__collection}>
-                    <p className={styles.nftCards__collectionInner}>
-                      <span className={styles.about__row}>Event: </span> {formatCardName(nftName)}
-                    </p>
-                    {nftName ? (
-                      <div className={styles.nftCards__checked}>
-                        <img src={CheckedIcon} alt="checked icon" />
-                      </div>
-                    ) : null}
-                  </div>
-                </Tooltip>
-
-                {/*=======*/}
-                {/* About */}
-                {/*=======*/}
-
-                {userCard && (
-                  <ul className={styles.about}>
-                    {userCard.token_address && (
-                      <li>
-                        <p className={styles.about__row}>
-                          Collection: {/* <Link to={`/nfts/${userCard.token_address}`}> */}
-                          {formatAddress(userCard.token_address)}
-                          {/* </Link> */}
-                        </p>
-                      </li>
-                    )}
-
-                    {userCard.owner_of && (
-                      <li>
-                        <p className={styles.about__row}>
-                          Owned By: {/* <Link to={`/account/${userCard.owner_of}`}> */}
-                          {formatAddress(userCard.owner_of)}
-                          {/* </Link> */}
-                        </p>
-                      </li>
-                    )}
-                    {nftDiscription && (
-                      <li>
-                        <p className={styles.about__row}>Description: {nftDiscription}</p>
-                      </li>
-                    )}
-                  </ul>
-                )}
-              </div>
-            </div>
-          </>
-        )}
+        </div>
+        <div className={styles.main_name}>{nftName}</div>
       </li>
 
       {/*==============*/}

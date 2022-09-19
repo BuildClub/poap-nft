@@ -74,6 +74,8 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <>
       <div className="wrapper">
+        <div className="blur"></div>
+        {/* <div className="blur-right"></div> */}
         <AppContext.Provider value={context}>
           {pathname !== '/404' ? (
             <>

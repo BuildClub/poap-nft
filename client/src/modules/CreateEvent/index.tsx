@@ -15,6 +15,7 @@ import * as Yup from 'yup';
 import { isAddress } from '@ethersproject/address';
 import { ToastContainer, toast } from 'react-toastify/dist/index';
 import 'react-toastify/dist/ReactToastify.css';
+import { formatAddress, formatFileName } from '@utils/index';
 
 const { TextArea } = Input;
 
@@ -35,6 +36,7 @@ const CreateEvent = ({}) => {
     },
   });
 
+  const [fileName, setFileName] = useState<string>('');
   const [isModalSalesSettings, setIsModalSalesSettings] = useState<boolean>(false);
   const [isErrorModalVisible, setIsErrorModalVisible] = useState<boolean>(false);
   const [isWaitingModalVisible, setIsWaitingModalVisible] = useState<boolean>(false);
@@ -71,7 +73,7 @@ const CreateEvent = ({}) => {
       title: Yup.string().label('Title').required(),
       description: Yup.string().label('Description').required(),
       email: Yup.string().email().required(),
-      img: Yup.string().required('Image is required'),
+      img: Yup.string().nullable().required('Image is required'),
       address: Yup.string()
         .label('Wallet address')
         .required()
@@ -149,6 +151,7 @@ const CreateEvent = ({}) => {
 
   const setImage = async (e: any) => {
     const file = e.target.files[0];
+    setFileName(file.name);
 
     try {
       const added = await client.add(file);
@@ -176,81 +179,97 @@ const CreateEvent = ({}) => {
     <div className="container">
       <form onSubmit={handleSubmit} className={s.inner}>
         <h4 className={s.title}>Create event</h4>
-        <h5 className={s.subTitle}>Event title</h5>
-        <div className={cn(s.amount)}>
-          <Input
-            className={s.amountInput}
-            onChange={handleChange}
-            value={values.title}
-            name="title"
-            id="title"
-          />
-        </div>
-        {errors.title && touched.title && <span className={s.error}>{errors.title}</span>}
 
-        <h5 className={s.subTitle}>Event description</h5>
-
-        <div className={cn(s.amount)}>
-          <TextArea
-            className={s.areaInput}
-            onChange={handleChange}
-            value={values.description}
-            name="description"
-            id="description"
-          />
-        </div>
-        {errors.description && touched.description && (
-          <span className={s.error}>{errors.description}</span>
-        )}
-
-        <h5 className={s.subTitle}>Your wallet address</h5>
-        <div className={cn(s.amount)}>
-          <Input
-            className={s.amountInput}
-            onChange={handleChange}
-            value={values.address}
-            name="address"
-            id="address"
-          />
-        </div>
-        {errors.address && touched.address && <span className={s.error}>{errors.address}</span>}
-
-        <div className={s.inputs}>
-          <div className={s.input}>
-            <h5 className={s.subTitle}>Upload image</h5>
-
-            <div className={cn(s.amount)}>
-              <Input
-                className={s.amountInput}
-                type="file"
-                onChange={setImage}
-                name="img"
-                id="img"
+        <div className={s.allInputsWrapper}>
+          <div>
+            <fieldset className={cn(s.fakeBorder, s.titleInput)}>
+              <legend className={s.fakeBorder__text}>Event title</legend>
+              <input
+                className={cn(s.amountInput, s.titleInput)}
+                onChange={handleChange}
+                value={values.title}
+                name="title"
+                id="title"
               />
-            </div>
-            {errors.img && touched.img && <span className={s.error}>{errors.img}</span>}
-          </div>
-          <div className={s.input}>
-            <h5 className={s.subTitle}>Email</h5>
+            </fieldset>
 
-            <div className={cn(s.amount)}>
-              <Input
+            {errors.title && touched.title && <span className={s.error}>{errors.title}</span>}
+          </div>
+
+          {/* <h5 className={s.subTitle}>Event description</h5> */}
+
+          <div>
+            <fieldset className={cn(s.fakeBorder, s.area)}>
+              <legend className={s.fakeBorder__text}>Event Description</legend>
+              <textarea
+                className={s.areaInput}
+                onChange={handleChange}
+                value={values.description}
+                name="description"
+                id="description"
+              />
+            </fieldset>
+
+            {errors.description && touched.description && (
+              <span className={s.error}>{errors.description}</span>
+            )}
+          </div>
+
+          <div>
+            <fieldset className={s.fakeBorder}>
+              <legend className={s.fakeBorder__text}>Your wallet address</legend>
+              <input
                 className={s.amountInput}
                 onChange={handleChange}
-                value={values.email}
-                name="email"
-                id="email"
+                value={values.address}
+                name="address"
+                id="address"
               />
-            </div>
-            {errors.email && touched.email && <span className={s.error}>{errors.email}</span>}
-          </div>
-        </div>
+            </fieldset>
 
-        <div className={s.actionBtnWrapp}>
-          <button disabled={isSubmitBtnActive} type="submit" className="btn primary">
-            {/* <button disabled={isSubmitBtnActive} className="btn primary" onClick={createEvent}> */}
-            {'Create'}
-          </button>
+            {errors.address && touched.address && <span className={s.error}>{errors.address}</span>}
+          </div>
+
+          <div className={s.inputs}>
+            <div className={s.input}>
+              <fieldset className={cn(s.fakeBorder, s.file)}>
+                <legend className={s.fakeBorder__text}>Upload image</legend>
+                <label className={s.fileBtn} htmlFor="img">
+                  Browse
+                </label>
+                <span className={s.fileName}>{formatFileName(fileName)}</span>
+                <input
+                  className={cn(s.amountInput, s.invisible)}
+                  type="file"
+                  onChange={setImage}
+                  name="img"
+                  id="img"
+                />
+              </fieldset>
+              {errors.img && touched.img && <span className={s.error}>{errors.img}</span>}
+            </div>
+            <div className={s.input}>
+              <fieldset className={s.fakeBorder}>
+                <legend className={s.fakeBorder__text}>Email</legend>
+                <input
+                  className={s.amountInput}
+                  onChange={handleChange}
+                  value={values.email}
+                  name="email"
+                  id="email"
+                />
+              </fieldset>
+
+              {errors.email && touched.email && <span className={s.error}>{errors.email}</span>}
+            </div>
+          </div>
+
+          <div className={s.actionBtnWrapp}>
+            <button disabled={isSubmitBtnActive} type="submit" className="btn primary">
+              {/* <button disabled={isSubmitBtnActive} className="btn primary" onClick={createEvent}> */}
+              {'Create'}
+            </button>
+          </div>
         </div>
       </form>
       <ModalContainer

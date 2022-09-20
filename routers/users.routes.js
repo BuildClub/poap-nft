@@ -16,6 +16,16 @@ userRouter.get('/', async (req, res) => {
   }
 });
 
+userRouter.get('/checkAuth', isAuth, async (req, res) => {
+  try {
+    res.status(201).send({
+      message: 'Valid token',
+    });
+  } catch (e) {
+    res.status(401).send({ message: 'Unauthorized user' });
+  }
+});
+
 userRouter.post('/login', async (req, res) => {
   console.log('req.body login', req.body);
   try {

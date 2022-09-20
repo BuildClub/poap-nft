@@ -11,7 +11,7 @@ module.exports = (user) => {
     },
     process.env.JWT_SECRET || 'somethingsecret',
     {
-      expiresIn: '30d',
+      expiresIn: '1d',
     },
   );
 };

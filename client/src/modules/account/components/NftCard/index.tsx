@@ -94,8 +94,9 @@ const NftCard: FC<{
     <>
       <li className={styles.main}>
         <div className={styles.nftCards__image}>
-          <div className={styles.nftCards__imageWrapper}>
-            {/* {item.eventImage ? (
+          {imgUri ? (
+            <div className={styles.nftCards__imageWrapper}>
+              {/* {item.eventImage ? (
                             <AsyncImage
                               src={item.eventImage}
                               alt="Image"
@@ -104,12 +105,12 @@ const NftCard: FC<{
                           ) : (
                             <NftImageNotFound />
                           )} */}
-            {imgUri ? (
+
               <AsyncImage src={imgUri} alt="Image" onError={imageErrorHandler} />
-            ) : (
-              <NftImageNotFound />
-            )}
-          </div>
+            </div>
+          ) : (
+            <NftImageNotFound />
+          )}
         </div>
         <div className={styles.main_name}>{nftName}</div>
       </li>

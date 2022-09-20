@@ -68,6 +68,7 @@ $gradient-green: linear-gradient(180deg, #beec82 0%, #7bc719 100%);
   --theme-nfts-fade: rgba(5, 5, 5, 0.95);
   --theme-nfts-fade-footer: #050505;
   --theme-switch-bg: #383838;
+  --theme-text-title: #ffffff;
 }
 
 .light-mode {
@@ -102,4 +103,5 @@ $gradient-green: linear-gradient(180deg, #beec82 0%, #7bc719 100%);
   --theme-nfts-fade: rgba(221, 217, 217, 0.95);
   --theme-nfts-fade-footer: #eee7e7;
   --theme-switch-bg: #eaeaea;
+  --theme-text-title: #45c98f;
 }

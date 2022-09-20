@@ -116,7 +116,7 @@ const Events = () => {
         },
       );
 
-      console.log('data', data);
+      // console.log('data', data);
 
       const { data: mailData } = await axios.post(`${BASE_URL}/sendmail`, {
         to: event.email,
@@ -217,6 +217,7 @@ const Events = () => {
   return (
     <div className={styles.account}>
       <div className="container h100">
+        <h4 className={styles.title}>Events</h4>
         <section className={styles.cardCollection}>
           <ul className={styles.nftCards}>
             {events.length > 0
@@ -263,111 +264,12 @@ const Events = () => {
                       </div>
                     </li>
                   );
-                  // return (
-                  //   <li key={item._id} className={cn(styles.nftCards__item)}>
-                  //     {isLoading ? (
-                  //       <div className="skeleton">
-                  //         <NftImageNotFound />
-                  //         <br />
-                  //         <br />
-                  //         <Skeleton active />
-                  //       </div>
-                  //     ) : (
-                  //       <>
-                  //         <div className={styles.nftCards__image}>
-                  //           {item.eventImage ? (
-                  //             <AsyncImage
-                  //               src={item.eventImage}
-                  //               alt="Image"
-                  //               onError={imageErrorHandler}
-                  //             />
-                  //           ) : (
-                  //             <NftImageNotFound />
-                  //           )}
-                  //         </div>
-                  //         <div className={styles.nftCards__info}>
-                  //           <div className={styles.nftCards__mainInfo}>
-                  //             {/*==========================*/}
-                  //             {/* Card Collection and Name */}
-                  //             {/*==========================*/}
-
-                  //             <Tooltip
-                  //               placement="bottomLeft"
-                  //               trigger={
-                  //                 item.eventName && item.eventName.length >= 15 ? 'hover' : ''
-                  //               }
-                  //               title={item.eventName && item.eventName}
-                  //               overlayClassName={styles.nftCards__tooltip}
-                  //             >
-                  //               <h4 className={styles.nftCards__name}>
-                  //                 {item.eventName && formatCollectionName(item.eventName, item._id)}
-                  //               </h4>
-                  //             </Tooltip>
-
-                  //             <Tooltip
-                  //               placement="bottomLeft"
-                  //               trigger={
-                  //                 item.eventName && item.eventName.length >= 25 ? 'hover' : ''
-                  //               }
-                  //               title={item.eventName}
-                  //               overlayClassName={styles.nftCards__tooltip}
-                  //             >
-                  //               <div className={styles.nftCards__collection}>
-                  //                 <p className={styles.nftCards__collectionInner}>
-                  //                   <span className={styles.about__row}>Description: </span>{' '}
-                  //                   {formatCardName(item.eventDescription)}
-                  //                 </p>
-                  //               </div>
-                  //             </Tooltip>
-
-                  //             <div className={styles.btns_wrapper}>
-                  //               <button
-                  //                 className="btn primary"
-                  //                 onClick={() => approveEventHandler(item)}
-                  //               >
-                  //                 Approve event
-                  //               </button>
-
-                  //               <button
-                  //                 className="btn secondary"
-                  //                 onClick={() => rejectEventHandler(item)}
-                  //               >
-                  //                 Reject event
-                  //               </button>
-                  //             </div>
-
-                  //             {/*=======*/}
-                  //             {/* About */}
-                  //             {/*=======*/}
-                  //           </div>
-                  //         </div>
-                  //       </>
-                  //     )}
-                  //   </li>
-                  // );
                 })
               : 'There are no events for approve'}
           </ul>
         </section>
       </div>
       <ToastContainer theme="colored" />
-      {/* <ModalContainer
-                    className="Modal-container padding-reset"
-                    isVisible={isModalVisible}
-                    handleCancel={() => {
-                      setIsModalVisible(false);
-                      setIsErrorModalVisible(false);
-                      setIsWaitingModalVisible(false);
-                    }}
-                    width={468}
-                  >
-                    {!isErrorModalVisible && isWaitingModalVisible && (
-                      <WaitingModal setIsModalVisible={setIsModalVisible} />
-                    )}
-                    {isErrorModalVisible && !isWaitingModalVisible && (
-                      <ErrorModal errorModalCloseBtn={errorModalCloseBtn} />
-                    )}
-                  </ModalContainer> */}
     </div>
   );
 };

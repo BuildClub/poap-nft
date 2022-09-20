@@ -113,6 +113,12 @@
   }
 }
 
+.title {
+  color: var(--theme-text-title);
+  text-align: center;
+  font-size: 24px;
+}
+
 .cardCollection {
   height: 100%;
   margin: 0 auto;

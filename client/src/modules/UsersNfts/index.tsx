@@ -33,12 +33,14 @@ const CollectionAccount = () => {
   return !account ? (
     <div className={styles.account}>
       <div className="container h100">
+        <h4 className={styles.title}>Explore Collection</h4>
         <section className={styles.cardCollection}>{!account && <WalletConnect big />}</section>
       </div>
     </div>
   ) : (
     <div className={styles.account}>
       <div className="container h100">
+        <h4 className={styles.title}>Explore Collection</h4>
         <section className={styles.cardCollection}>
           {isAllNftsLoading ? <Skeleton active /> : <NftCardsList userCards={nfts} />}
         </section>

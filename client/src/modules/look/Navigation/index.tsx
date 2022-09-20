@@ -7,66 +7,62 @@ import AppContext from '@modules/layout/context/AppContext';
 
 interface NavigationProps {
   themeMode?: any;
+  walletConnect?: any;
+  close?: any;
 }
 
-const Navigation = ({ themeMode }: NavigationProps) => {
-  const { isAdmin } = useContext(AppContext);
+const Navigation = ({ themeMode, walletConnect, close }: NavigationProps) => {
+  const { isAdmin, authToken, isLightMode } = useContext(AppContext);
 
   return (
     <nav className={styles.Navigation}>
       <div className={styles.Navigation__heading}>
         <h5>Menu</h5>
-        <a className={styles.Navigation__close} />
+        <a onClick={close} className={styles.Navigation__close} />
       </div>
       <ul>
-        {/* <li>
-        <a href="https://rad.live/on-demand" target="_blank">
-          On Demand
-        </a>
-      </li>
-      <li>
-        <a href="https://rad.live/live-tv" target="_blank">
-          Live TV
-        </a>
-      </li>
-      <li>
-        <Link to="/nfts/0x4e121d145cd52c1537835e6752ddf21bcd58c10a/2">NFT Auctions</Link>
-      </li> */}
-        <li>
-          <NavLink
-            style={(isActive) => ({
-              color: isActive ? '#98c063' : '',
-            })}
-            to="/createEvent"
-          >
-            Create event
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            style={(isActive) => ({
-              color: isActive ? '#98c063' : '',
-            })}
-            to="/manageDrop"
-          >
-            Manage drop
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            style={(isActive) => ({
-              color: isActive ? '#98c063' : '',
-            })}
-            to="/userNfts"
-          >
-            Explore Collection
-          </NavLink>
-        </li>
+        {authToken && (
+          <li>
+            <NavLink
+              style={(isActive) => ({
+                fontWeight: isActive ? 'bold' : '',
+              })}
+              to="/createEvent"
+            >
+              Create event
+            </NavLink>
+          </li>
+        )}
+        {authToken && (
+          <li>
+            <NavLink
+              style={(isActive) => ({
+                // color: isActive && !isLightMode ? '#98c063' : isActive && isLightMode ? '#000' : '',
+                fontWeight: isActive ? 'bold' : '',
+              })}
+              to="/manageDrop"
+            >
+              Manage drop
+            </NavLink>
+          </li>
+        )}
+        {authToken && (
+          <li>
+            <NavLink
+              style={(isActive) => ({
+                fontWeight: isActive ? 'bold' : '',
+              })}
+              to="/userNfts"
+            >
+              Explore Collection
+            </NavLink>
+          </li>
+        )}
         {isAdmin && (
           <li>
             <NavLink
               style={(isActive) => ({
-                color: isActive ? '#98c063' : '',
+                fontWeight: isActive ? 'bold' : '',
               })}
               to="/events"
             >
@@ -82,6 +78,7 @@ const Navigation = ({ themeMode }: NavigationProps) => {
         <p>Theme:</p>
         {themeMode}
       </div>
+      <div className={styles.Navigation__wallet}>{walletConnect}</div>
     </nav>
   );
 };

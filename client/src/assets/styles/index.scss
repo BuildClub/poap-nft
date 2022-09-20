@@ -63,7 +63,7 @@ a {
     width: 400px;
   }
   @include media-mobile {
-    width: 200px;
+    display: none;
   }
 }
 .blur-down {
@@ -79,7 +79,7 @@ a {
     width: 400px;
   }
   @include media-mobile {
-    width: 200px;
+    display: none;
   }
 }
 
@@ -98,7 +98,7 @@ a {
     width: 400px;
   }
   @include media-mobile {
-    width: 200px;
+    display: none;
   }
 }
 .blur-right-down {
@@ -116,7 +116,7 @@ a {
     width: 400px;
   }
   @include media-mobile {
-    width: 200px;
+    display: none;
   }
 }
 

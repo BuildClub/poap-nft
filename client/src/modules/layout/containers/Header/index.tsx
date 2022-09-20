@@ -24,6 +24,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify/dist/index';
 import 'react-toastify/dist/ReactToastify.css';
+import { useHistory } from 'react-router';
 
 const { TabPane } = Tabs;
 
@@ -40,6 +41,7 @@ const Header = () => {
   const [isUnstakeTab, setUnstakeTab] = useState<boolean>(false);
 
   const { login, logout, token } = useAuth();
+  const history = useHistory();
 
   const SwitchLightMode = () => {
     isLightMode ? handleSwitchLightMode(false) : handleSwitchLightMode(true);
@@ -50,12 +52,12 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (token) {
+    if (authToken) {
       setIsAuthorize(true);
     } else {
       setIsAuthorize(false);
     }
-  }, [token]);
+  }, [authToken]);
 
   const handleAuth = useCallback(() => {
     // setIsWaitingModalVisible(true);
@@ -63,6 +65,7 @@ const Header = () => {
       setIsModalVisible(true);
     } else {
       logout();
+      history.push('/');
       setAuthToken('');
       setIsAdmin(false);
     }
@@ -116,7 +119,7 @@ const Header = () => {
           password: signInValues.signInPassword,
           email: signInValues.signInEmail,
         });
-        console.log('data', data);
+        // console.log('data', data);
 
         login(data.email, data.token, data.userId, data.isAdmin);
         setAuthToken(data.token);
@@ -164,7 +167,7 @@ const Header = () => {
           password: signUpValues.signUpPassword,
           email: signUpValues.signUpEmail,
         });
-        console.log('data', data);
+        // console.log('data', data);
 
         login(data.email, data.token, data.userId, data.isAdmin);
         setAuthToken(data.token);
@@ -219,18 +222,24 @@ const Header = () => {
 
             {!isBreakpoint && <ToggleThemeMode />}
 
-            <div>
-              <WalletConnect isWalletBtn />
-            </div>
+            {!isBreakpoint && (
+              <div>
+                <WalletConnect isWalletBtn />
+              </div>
+            )}
 
             {isBreakpoint && (
               <>
-                <Button
-                  onClick={navIconToggle}
+                <div
+                  // onClick={navIconToggle}
                   className={cx(styles.nav_items, activeNav && styles.nav_items_active)}
                 >
-                  <Navigation themeMode={<ToggleThemeMode />} />
-                </Button>
+                  <Navigation
+                    themeMode={<ToggleThemeMode />}
+                    walletConnect={<WalletConnect close={navIconToggle} isWalletBtn />}
+                    close={navIconToggle}
+                  />
+                </div>
               </>
             )}
 

@@ -17,7 +17,7 @@
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background-color: var(--theme-border-color);
+    // background-color: var(--theme-border-color);
     border: none;
     outline: none;
     position: relative;
@@ -37,6 +37,11 @@
     }
     &::before {
       transform: rotate(-45deg);
+    }
+  }
+  &__wallet {
+    @include media-mobile {
+      padding: 15px;
     }
   }
   &__themeMode {
@@ -63,15 +68,15 @@
         line-height: 1;
         letter-spacing: 0.2px;
         color: var(--theme-text-primary);
-        &:hover {
-          color: $primary;
-        }
-        &.active {
-          color: $primary;
-        }
-        &:focus {
-          color: $primary;
-        }
+        // &:hover {
+        //   color: $primary;
+        // }
+        // &.active {
+        //   color: $primary;
+        // }
+        // &:focus {
+        //   color: $primary;
+        // }
       }
       &:first-child {
         padding-left: 0;

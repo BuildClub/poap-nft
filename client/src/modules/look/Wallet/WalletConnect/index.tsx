@@ -45,9 +45,11 @@ async function resetPermissions(connector: InjectedConnector) {
 const WalletConnect = ({
   big = false,
   isWalletBtn = false,
+  close,
 }: {
   big?: boolean;
   isWalletBtn?: boolean;
+  close?: any;
 }) => {
   const history = useHistory();
   const [isInitializingVisible, setIsInitializingVisible] = useState(false);
@@ -151,6 +153,10 @@ const WalletConnect = ({
     };
   }, [userMenuDropdown, handlerOutsideClick]);
 
+  const connectHandler = () => {
+    if (close) close();
+  };
+
   return (
     <>
       <div className={styles.walletInfoWrapp}>
@@ -166,7 +172,8 @@ const WalletConnect = ({
               />
             </div> */}
             <button className={styles.walletInfo} onClick={showUserMenu}>
-              {!isMobile && <p>{formatAddress(account)}</p>}
+              <p>{formatAddress(account)}</p>
+              {/* {!isMobile && <p>{formatAddress(account)}</p>} */}
             </button>
             {userMenuDropdown && (
               <ul className={styles.userMenu} ref={userMenuRef}>
@@ -222,7 +229,7 @@ const WalletConnect = ({
             onClick={() => setIsWalletModalVisible(true)}
           >
             {big && 'Explore my collection'}
-            <span>Connect a wallet</span>
+            <span onClick={connectHandler}>Connect a wallet</span>
           </button>
         )}
       </div>
@@ -238,7 +245,7 @@ const WalletConnect = ({
           <span className={cn(styles.statusIcon, 'status-icon-pattern-2')}></span>
           <ul className={styles.walletList}>
             {WALLETS.map(({ name, icon, walletConnector }) => {
-              if (isMobile && name === 'Metamask') return;
+              // if (isMobile && name === 'Metamask') return;
               return (
                 <li key={name}>
                   <Button onClick={() => activateWallet(walletConnector)} block>

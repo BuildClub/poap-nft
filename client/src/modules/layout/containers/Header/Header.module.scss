@@ -144,6 +144,7 @@
     transition: 0.3s all;
     box-shadow: none;
     font-size: inherit;
+    // border: none;
 
     @media (max-width: $bdt_bp) {
       display: grid;
@@ -177,7 +178,7 @@
         background-color: var(--theme-body-color);
         padding: 20px 0;
         box-shadow: none;
-        border: 1px solid var(--theme-border-color);
+        // border: 1px solid var(--theme-border-color);
         border-left: none;
         left: -16px;
         color: $white;
@@ -188,7 +189,7 @@
         &:focus,
         &:active {
           background-color: var(--theme-body-color);
-          border: 1px solid var(--theme-border-color);
+          // border: 1px solid var(--theme-border-color);
           border-left: none;
           color: $white;
         }
@@ -212,7 +213,7 @@
         li {
           padding: 14px 15px;
           text-align: left;
-          border-bottom: 1px solid var(--theme-border-color);
+          // border-bottom: 1px solid var(--theme-border-color);
 
           &:last-child {
             border: 0;
@@ -485,7 +486,7 @@
   width: 100%;
   height: 36px;
   background-color: transparent;
-  border: var(--theme-text-primary);
+  // border: var(--theme-text-primary);
   color: var(--theme-text-primary);
   padding-left: 14px;
   padding-right: 60px;

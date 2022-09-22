@@ -1,0 +1,39 @@
+.wrong {
+  color: var(--theme-text-white);
+  text-align: center;
+  padding: 30px 30px 40px;
+
+  .statusIcon {
+    display: block;
+    margin: -30px auto -50px;
+    width: 219px;
+    height: 187px;
+  }
+
+  h5 {
+    color: var(--thame-text-dark-gray);
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 20px;
+    letter-spacing: 0.003em;
+    margin-bottom: 30px;
+  }
+
+  p {
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 24px;
+    letter-spacing: 0.003em;
+    color: var(--theme-text-secondary);
+    margin: 0 0 30px;
+  }
+
+  .btnGroup {
+    width: 100%;
+
+    button {
+      left: calc((100% - 200px) / 2);
+      margin-bottom: 0;
+    }
+  }
+}

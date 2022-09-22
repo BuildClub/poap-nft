@@ -1,0 +1,38 @@
+.WalletDetail {
+  &__info {
+    padding: 30px;
+
+    p {
+      margin-bottom: 5px;
+    }
+
+    &__icon {
+      width: 48px;
+      margin-right: 12px;
+    }
+  }
+
+  &__links {
+    padding: 16px 30px;
+    border-top: 1px solid var(--theme-border-color);
+
+    a {
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        color: var(--D7-L7);
+      }
+
+      i {
+        font-size: 24px;
+        margin-right: 7px;
+      }
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+    }
+  }
+}

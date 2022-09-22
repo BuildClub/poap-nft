@@ -1,0 +1,107 @@
+// Breakpoints
+
+$xs_bp: 468px;
+$sm_bp: 576px;
+$sp_bp: 768px;
+$tb_bp: 992px;
+$dt_bp: 1200px;
+$bdt_bp: 1330px;
+
+// Breackpoints Use in mixins
+$low-mobile-breackpoint: 375px;
+$mobile-breackpoint: 1024px;
+$tablet-breackpoint: 1310px;
+
+// Colors
+$primary: #45c98f;
+// $primary: #ac28f5;
+$primaryHover: #4aca93;
+// $primaryHover: #c55fff;
+$secondary: #ccff74;
+$success: #8ad52a;
+// $btnPrimary: #98c063;
+// $btnSecondary: #b1cf8a;
+$pink: #ff809e;
+$green: #3feb7e;
+$dark: #444444;
+$text: #555;
+$text-primary: #efefef;
+$gray: #999;
+$white: #fff;
+$black: #0d0d0d;
+$light-gray: #707378;
+
+$gradient-yellow: linear-gradient(180deg, #ffd770 0%, #ff9f15 100%);
+$gradient-pink: linear-gradient(180deg, #fdbd91 0%, #f66daf 100%);
+$gradient-green: linear-gradient(180deg, #beec82 0%, #7bc719 100%);
+
+:root {
+  --theme-body-color: #262626;
+  --theme-footer-color: #242424;
+  --theme-card-color: #181a1e;
+  --thame-card-shadow: transparent;
+  --theme-border-color: #142149;
+  --theme-text-primary: #efefef;
+  --theme-text-secondary: #b7b7b7;
+  --theme-text-gray: #707378;
+  --thame-text-light-gray: #efefef;
+  --thame-text-dark-gray: #efefef;
+  --theme-text-white: #fff;
+  --theme-box-shadow: rgba(5, 5, 5, 0.3);
+  --theme-modal-bg: #160e24;
+  --thame-modal-text-gray: #707378;
+  --thame-modal-backing-bg: #181a1e;
+  --thame-socials-primary: #fff;
+  --thame-socials-gray: #707378;
+  --thame-btn-square: #313339;
+  --thame-close-icon: rgba(255, 255, 255, 0.6);
+  --thame-card-btn: #0d0d0d;
+  --thame-card-btn-text: #fff;
+  --thame-card-border-color: transparent;
+  --thame-card-no-image: #707378;
+  --thame-card-bg: #071235;
+  --thame-card-no-image-bg: #0c1e52;
+  --thame-disabled-btn-text: #343639;
+  --theme-avatar-bg: #ac28f5;
+  --theme-avatar-text: #fff;
+  --theme-nfts-fade-light: rgba(5, 5, 5, 0.1);
+  --theme-nfts-fade: rgba(5, 5, 5, 0.95);
+  --theme-nfts-fade-footer: #050505;
+  --theme-switch-bg: #383838;
+  --theme-text-title: #ffffff;
+}
+
+.light-mode {
+  --theme-body-color: rgb(231, 226, 240);
+  --theme-footer-color: #fafafa;
+  --theme-card-color: #ffffff;
+  --thame-card-shadow: #c5c5c5;
+  --theme-border-color: #e8e8e8;
+  --theme-text-primary: #000;
+  --theme-text-secondary: #555;
+  --theme-text-gray: #999;
+  --thame-text-light-gray: #999;
+  --thame-text-dark-gray: #444;
+  --theme-text-white: #000;
+  --theme-box-shadow: rgba(197, 197, 197, 0.25);
+  --theme-modal-bg: #fff;
+  --thame-modal-backing-bg: #f3f3f3;
+  --thame-socials-primary: #ac28f5;
+  --thame-socials-gray: #ac28f5;
+  --thame-btn-square: #999;
+  --thame-close-icon: rgba(29, 29, 29, 0.6);
+  --thame-card-btn: #fbfbfb;
+  --thame-card-btn-text: #555;
+  --thame-card-border-color: #e7e7e7;
+  --thame-card-bg: #fff;
+  --thame-card-no-image: #999;
+  --thame-card-no-image-bg: #ededed;
+  --thame-disabled-btn-text: #c2c3c5;
+  --theme-avatar-bg: #000;
+  --theme-avatar-text: #ac28f5;
+  --theme-nfts-fade-light: rgba(241, 238, 238, 0.1);
+  --theme-nfts-fade: rgba(221, 217, 217, 0.95);
+  --theme-nfts-fade-footer: #eee7e7;
+  --theme-switch-bg: #eaeaea;
+  --theme-text-title: #45c98f;
+}

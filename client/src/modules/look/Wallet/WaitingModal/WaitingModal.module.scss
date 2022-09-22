@@ -1,0 +1,40 @@
+.waiting {
+  color: var(--theme-text-white);
+  text-align: center;
+  height: 394px;
+  position: relative;
+  z-index: 1;
+
+  &__btn {
+    min-height: 55px;
+    min-width: 198px;
+    margin-top: 20px;
+  }
+
+  &__link {
+    display: block;
+    min-width: 198px;
+    color: $primary;
+    font-size: 16px;
+  }
+
+  img:nth-child(2) {
+    margin-top: 20px;
+  }
+
+  img:nth-child(1) {
+    margin-top: 73px;
+  }
+
+  h5 {
+    color: var(--thame-text-dark-gray);
+    font-weight: 600;
+    padding: 0 20px;
+    font-size: 16px;
+    line-height: 2;
+    letter-spacing: 0.003em;
+    position: relative;
+    z-index: 2;
+    margin-top: 40px;
+  }
+}

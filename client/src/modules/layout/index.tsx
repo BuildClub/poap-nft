@@ -90,7 +90,6 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
         console.log('AUTH ERROR', error.response.status);
         //@ts-ignore
         if (error.response.status === 401) {
-          console.log('LOGOUT');
           logout();
           setAuthToken('');
           setIsAdmin(false);

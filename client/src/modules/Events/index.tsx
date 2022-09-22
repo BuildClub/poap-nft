@@ -116,16 +116,12 @@ const Events = () => {
         },
       );
 
-      // console.log('data', data);
-
       const { data: mailData } = await axios.post(`${BASE_URL}/sendmail`, {
         to: event.email,
         subject: 'Nft-Memo event',
         html:
           '</br > <br /> You event has been approved. The event’s NFT drop will appear in the “Manage Drop” tab very soon. ',
       });
-
-      console.log('mailData', mailData);
 
       getEvents();
 
@@ -176,14 +172,11 @@ const Events = () => {
         },
       });
 
-      console.log('delete', data);
-
       const { data: mailData } = await axios.post(`${BASE_URL}/sendmail`, {
         to: event.email,
         subject: 'Nft-Memo event',
         html: '</br > <br /> Your request to create an event has been declined>',
       });
-      console.log('mailData', mailData);
 
       getEvents();
 

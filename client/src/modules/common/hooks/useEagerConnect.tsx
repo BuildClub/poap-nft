@@ -31,9 +31,6 @@ const useEagerConnect = () => {
           setTried(true);
         });
     } else if (network) {
-      // console.log('EAGER', network);
-      // const provider = await network.getProvider();
-      // await setupNetwork(provider);
       activate(network)
         .then(() => {
           setTried(true);

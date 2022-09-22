@@ -24,8 +24,6 @@ const CollectionAccount = () => {
 
   useEffect(() => {
     if (allNfts) {
-      // console.log('allNfts', allNfts);
-
       setNfts(allNfts);
     }
   }, [allNfts, allNftsTotal]);

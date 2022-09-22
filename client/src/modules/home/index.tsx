@@ -1,18 +1,12 @@
 import styles from './Home.module.scss';
 import { useHistory } from 'react-router';
-import { useEffect, useRef } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import Web3 from 'web3';
-import { WalletConnect } from '@modules/look/Wallet';
+import { useEffect } from 'react';
 import ctaImg from '@assets/images/home/title-img.png';
-import howImg from '@assets/images/home/how-img.png';
 import nftImg from '@assets/images/nft-img-example.svg';
 import { Button } from 'antd';
 
 const Home = () => {
   const history = useHistory();
-
-  const { account, deactivate } = useWeb3React();
 
   // Scroll To Top when route on this page
   useEffect(() => {
@@ -20,7 +14,6 @@ const Home = () => {
   }, []);
 
   const ctaHandler = () => {
-    // console.log('CTA');
     history.push('/UserNfts');
   };
 

@@ -29,8 +29,6 @@ function useNftMetadataWithInfura(tokenUri: string = '') {
       }
 
       if (res.image) {
-        console.log('res.image', resolveLink(res.image));
-
         setImgUri(resolveLink(res.image));
       } else setImgUri('');
 

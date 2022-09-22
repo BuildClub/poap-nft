@@ -119,7 +119,6 @@ const Header = () => {
           password: signInValues.signInPassword,
           email: signInValues.signInEmail,
         });
-        // console.log('data', data);
 
         login(data.email, data.token, data.userId, data.isAdmin);
         setAuthToken(data.token);
@@ -167,7 +166,6 @@ const Header = () => {
           password: signUpValues.signUpPassword,
           email: signUpValues.signUpEmail,
         });
-        // console.log('data', data);
 
         login(data.email, data.token, data.userId, data.isAdmin);
         setAuthToken(data.token);

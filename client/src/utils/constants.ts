@@ -62,7 +62,9 @@ export const CONTRACTS: Contracts = {
 };
 
 // export const BASE_URL = 'http://localhost:5002';
-export const BASE_URL = 'https://nft-memo.org';
+// export const BASE_URL = 'https://44.203.208.161';
+export const BASE_URL = 'https://collectpups.com/';
+// export const BASE_URL = 'https://nft-memo.org';
 
 export interface INftCard {
   amount?: string;

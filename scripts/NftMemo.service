@@ -1,0 +1,14 @@
+[Unit]
+Description=NFT Memo Web Application
+
+[Service]
+WorkingDirectory=/home/ubuntu/app/memo-nft
+Environment=NODE_VERSION=16
+ExecStart=/home/ubuntu/.nvm/nvm-exec npm run start
+Restart=always
+RestartSec=10
+SyslogIdentifier=nft-memo
+User=ubuntu
+
+[Install]
+WantedBy=multi-user.target

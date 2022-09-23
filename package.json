@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "heroku-postbuild": "craco build && cp -r build/ server/build && cd server && npm ci && cd .. ",
-    "start": "cd server && npm run start",
+    "start": "node app.js",
     "dev": "craco start",
     "build": "craco build",
     "test": "craco test",

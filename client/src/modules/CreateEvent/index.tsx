@@ -113,7 +113,7 @@ const CreateEvent = ({}) => {
 
         const { data: mailData } = await axios.post(`${BASE_URL}/sendmail`, {
           to: values.email,
-          subject: 'Nft-Memo event',
+          subject: 'Power Ups event',
           html: `</br > <br /> Your request to create an ${values.title} event is being processed. You will receive an email within 24 hours with a response.`,
         });
 

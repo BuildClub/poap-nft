@@ -21,7 +21,7 @@ mailRouter.post('/', (req, res) => {
     text: ``,
     html: ' Dear User, '
       .concat(req.body.html)
-      .concat('</br > <br /><a href="https://nft-memo.org">'),
+      .concat('</br > <br /><a href="https://collectpups.com">'),
   };
 
   transporter.sendMail(mailOptions, (err, info) => {

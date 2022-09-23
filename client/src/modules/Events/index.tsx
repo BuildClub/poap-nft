@@ -118,7 +118,7 @@ const Events = () => {
 
       const { data: mailData } = await axios.post(`${BASE_URL}/sendmail`, {
         to: event.email,
-        subject: 'Nft-Memo event',
+        subject: 'Power Ups event',
         html:
           '</br > <br /> You event has been approved. The event’s NFT drop will appear in the “Manage Drop” tab very soon. ',
       });
@@ -174,7 +174,7 @@ const Events = () => {
 
       const { data: mailData } = await axios.post(`${BASE_URL}/sendmail`, {
         to: event.email,
-        subject: 'Nft-Memo event',
+        subject: 'Power Ups event',
         html: '</br > <br /> Your request to create an event has been declined>',
       });
 

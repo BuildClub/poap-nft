@@ -113,7 +113,6 @@ const ManageDrop = ({}) => {
   };
 
   useEffect(() => {
-    // console.log('eventsList', eventsList);
     if (eventsList && eventsList.length > 1 && account) {
       let filtredEvents = eventsList.filter(
         (item: any) =>

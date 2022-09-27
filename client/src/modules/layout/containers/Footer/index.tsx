@@ -1,5 +1,6 @@
 import styles from './Footer.module.scss';
 import Logo from '@assets/images/logo/new-logo.svg';
+import LogoSoc from '@assets/images/logo/logo-link.png';
 import LogoDark from '@assets/images/logo/new-logo-dark.svg';
 import TwitterImg from '@assets/images/footer/twitter.svg';
 import DiscordImg from '@assets/images/footer/discord.svg';
@@ -35,8 +36,11 @@ const Footer = () => {
               <a target="_blank" href="https://twitter.com/GodwokenRises">
                 <img src={TwitterImg} alt="" />
               </a>
-              <a target="_blank" href="https://discord.gg/548hTG2Ku2">
+              <a className="ml-2" target="_blank" href="https://discord.gg/548hTG2Ku2">
                 <img src={DiscordImg} alt="" />
+              </a>
+              <a className={styles.footer__social_logo} target="_blank" href="https://godwoken.com">
+                <img src={LogoSoc} alt="" />
               </a>
             </div>
             <div className={styles.footer__rights}>©2022 - PUps | All right reserved</div>

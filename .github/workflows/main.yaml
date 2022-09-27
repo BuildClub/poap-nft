@@ -102,6 +102,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            rm -rf app/memo-nft/build
             mv fe-build/build app/memo-nft/
             sudo service NftMemo stop
             sudo service NftMemo start

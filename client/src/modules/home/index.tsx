@@ -39,12 +39,10 @@ const Home = () => {
         <div className={styles.how}>
           <div className={styles.how_title}>How do PUps Work?</div>
           <div className={styles.how_subtitle}>
-            PUps are a unique NFT given to participants of events and to commemorate those attending
-            and receiving achievements made through Godwoken development. PUps can be collected over
-            time and collected by, Godwoken community members, Developers, Event organizers, and
-            Promoters. So, start your extraordinary cyber collection to document your memories,
-            create bonds, celebrate achievements throughout Godwoken development, and maybe win some
-            prizes!
+            PUps can be collected over time by Godwoken community members, developers, event
+            organizers, promoters, and those who participate in both online and irl events! So start
+            your extraordinary cyber collection to document your memories, create bonds, celebrate
+            achievements throughout Godwoken development, and maybe win some prizes!
           </div>
           <div className={styles.how_imgs}>
             {[...Array(4).keys()].map((item) => (

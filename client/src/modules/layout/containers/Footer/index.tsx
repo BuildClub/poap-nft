@@ -32,10 +32,10 @@ const Footer = () => {
             <div className={styles.footer__title}>Join Our Community</div>
 
             <div className={styles.footer__social}>
-              <a target="_blank" href="https://twitter.com/NervosNetwork">
+              <a target="_blank" href="https://twitter.com/GodwokenRises">
                 <img src={TwitterImg} alt="" />
               </a>
-              <a href="#">
+              <a target="_blank" href="https://discord.gg/548hTG2Ku2">
                 <img src={DiscordImg} alt="" />
               </a>
             </div>

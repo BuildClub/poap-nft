@@ -132,6 +132,20 @@
   }
 }
 
+.link {
+  display: block;
+  min-width: 198px;
+  color: $primary;
+  font-size: 16px;
+  font-weight: normal;
+  text-align: center;
+  margin-top: 10px;
+  &:hover {
+    // font-weight: bold;
+    color: $primary;
+  }
+}
+
 .nav {
   &_items {
     position: absolute;

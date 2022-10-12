@@ -1,9 +1,12 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../models/UserModel.js');
+const Request = require('../models/Request.js');
 const generateToken = require('../utils/generateToken.js');
 const isAuth = require('../utils/isAuth.js');
 const isAdmin = require('../utils/isAdmin.js');
+const uuidv1 = require('uuidv1');
+const sendResetMail = require('../utils/sendResetMail.js');
 
 const userRouter = express.Router();
 
@@ -12,6 +15,43 @@ userRouter.get('/', async (req, res) => {
     const users = await User.find({});
     return res.status(200).json(users);
   } catch (e) {
+    return res.status(500).json({ message: 'Something went wrong' });
+  }
+});
+
+userRouter.post('/forgot', async (req, res) => {
+  try {
+    console.log('FORGOT', req.body);
+    const thisUser = await User.findOne({ email: req.body.email });
+    console.log('thisUser', thisUser);
+    if (thisUser) {
+      const id = uuidv1();
+      console.log('id', id);
+      const request = new Request({
+        email: thisUser.email,
+        id,
+      });
+      console.log('request', request);
+      await request.save();
+      sendResetMail(thisUser.email, id);
+    }
+    res.status(200).json({ message: 'Email have been sent' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Something went wrong' });
+  }
+});
+
+userRouter.patch('/reset', async (req, res) => {
+  try {
+    const thisRequest = await Request.findOne({ id: req.body.id });
+    if (thisRequest) {
+      const user = await User.findOne({ email: thisRequest.email });
+      const hashed = await bcrypt.hash(req.body.password, 10);
+      user.password = hashed;
+      await user.save();
+      res.status(204).json({ message: 'Password updated' });
+    }
+  } catch (error) {
     return res.status(500).json({ message: 'Something went wrong' });
   }
 });

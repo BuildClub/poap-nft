@@ -13,7 +13,8 @@
     "eject": "react-scripts eject",
     "dev:prettier": "prettier --write .",
     "dev:prettier-check": "prettier --check .",
-    "dev:lint-check": "npx eslint ."
+    "dev:lint-check": "npx eslint .",
+    "development": "nodemon app.js"
   },
   "author": "Oleksandr",
   "license": "ISC",
@@ -27,6 +28,7 @@
     "multer": "^1.4.2",
     "nodemailer": "^6.5.0",
     "url": "^0.11.0",
+    "uuidv1": "^1.6.14",
     "web3": "^1.7.4"
   },
   "devDependencies": {

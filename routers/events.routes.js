@@ -42,8 +42,8 @@ router.post('/', isAuth, async (req, res) => {
 
 router.post('/createEvent', isAuth, isAdmin, async (req, res) => {
   try {
-    const web3 = new Web3('https://v1.mainnet.godwoken.io/rpc'); // Your Web3 instance
-    const contractAddress = '0x42B28E2Dc1843A636347C1D521d08711Ac18B2FB';
+    const web3 = new Web3(process.env.GW_RPC_URL); // Your Web3 instance
+    const contractAddress = process.env.CONTRACT_ADDRESS;
 
     const contract = new web3.eth.Contract(LINKS_NFT_ABI, contractAddress);
 
@@ -65,7 +65,7 @@ router.post('/createEvent', isAuth, isAdmin, async (req, res) => {
         data: trans,
         gasPrice: 400000000000000,
       },
-      '0x732ff5dd76e9a42bd33f4a30cdbdfe388eadef31bba86ddfb2ecccd86ddc3d73',
+      process.env.SECRET_KEY,
     );
 
     const tx = await web3.eth.sendSignedTransaction(createTransaction.rawTransaction);
@@ -91,8 +91,8 @@ router.post('/createEvent', isAuth, isAdmin, async (req, res) => {
 
 router.post('/addUserToEvent', isAuth, isAdmin, async (req, res) => {
   try {
-    const web3 = new Web3('https://v1.mainnet.godwoken.io/rpc'); // Your Web3 instance
-    const contractAddress = '0x42B28E2Dc1843A636347C1D521d08711Ac18B2FB';
+    const web3 = new Web3(process.env.GW_RPC_URL); // Your Web3 instance
+    const contractAddress = process.env.CONTRACT_ADDRESS;
 
     const contract = new web3.eth.Contract(LINKS_NFT_ABI, contractAddress);
 
@@ -106,7 +106,7 @@ router.post('/addUserToEvent', isAuth, isAdmin, async (req, res) => {
         data: trans,
         gasPrice: 400000000000000,
       },
-      '0x732ff5dd76e9a42bd33f4a30cdbdfe388eadef31bba86ddfb2ecccd86ddc3d73',
+      process.env.SECRET_KEY,
     );
 
     const tx = await web3.eth.sendSignedTransaction(createTransaction.rawTransaction);

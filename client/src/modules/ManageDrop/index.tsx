@@ -10,7 +10,12 @@ import {
 import { useWeb3React } from '@web3-react/core';
 import { buildQueryGodwoken } from '@utils/contracts';
 import { useMutation, useQuery } from 'react-query';
-import { ADD_EVENT_KEY, EVENTS_LIST_KEY, SET_EVENT_MINTERS_KEY } from '@utils/queryKeys';
+import {
+  ADD_EVENT_KEY,
+  EVENTS_LIST_KEY,
+  GET_IS_EVENT_NFTS_MINTERD_KEY,
+  SET_EVENT_MINTERS_KEY,
+} from '@utils/queryKeys';
 import { create as ipfsHttpClient } from 'ipfs-http-client';
 import * as XLSX from 'xlsx';
 import axios from 'axios';
@@ -42,12 +47,16 @@ const ManageDrop = ({}) => {
   const [fileError, setFileError] = useState<boolean>(false);
   const [users, setUsers] = useState<string[]>([]);
   const [emails, selEmails] = useState<string[]>([]);
+  const [notMintedEvents, setNotMintedEvents] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
   const [isModalSalesSettings, setIsModalSalesSettings] = useState<boolean>(false);
   const [isErrorModalVisible, setIsErrorModalVisible] = useState<boolean>(false);
   const [isWaitingModalVisible, setIsWaitingModalVisible] = useState<boolean>(false);
 
-  const { allEvents: allEventsQuery } = usePoapLinksUnsignContract(LINKS_NFT_ADDRESS, true);
+  const {
+    allEvents: allEventsQuery,
+    getIsEventNftsMinted: getIsEventNftsMintedQuery,
+  } = usePoapLinksUnsignContract(LINKS_NFT_ADDRESS, true);
 
   const { data: eventsList, isLoading: isEventsListLoading, refetch: refetchEventsList } = useQuery(
     EVENTS_LIST_KEY,
@@ -81,6 +90,28 @@ const ManageDrop = ({}) => {
     },
   );
 
+  const {
+    data: getIsEventNftsMintedTx,
+    mutateAsync: getIsEventNftsMinted,
+    isLoading: isEventNftsMintedLoading,
+  } = useMutation(
+    `${GET_IS_EVENT_NFTS_MINTERD_KEY}_${eventId}`,
+    (currentEvent: number): Promise<any> =>
+      //@ts-ignore
+      buildQueryGodwoken(getIsEventNftsMintedQuery, [currentEvent], 500000),
+    {
+      onError: (err) => console.log(err, `${GET_IS_EVENT_NFTS_MINTERD_KEY}_${eventId}`),
+    },
+  );
+
+  useEffect(() => {
+    console.log('setEventMintersTx', setEventMintersTx);
+  }, [setEventMintersTx]);
+
+  useEffect(() => {
+    console.log('isSetEventMintersLoading', isSetEventMintersLoading);
+  }, [isSetEventMintersLoading]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (eventsList && eventsList.length > 0 && account) {
@@ -113,10 +144,29 @@ const ManageDrop = ({}) => {
   };
 
   useEffect(() => {
-    if (eventsList && eventsList.length > 1 && account) {
+    if (eventsList && eventsList.length > 1) {
+      const getNotMintedEvents = async (arr: any) => {
+        const notMintedArr = [];
+        for (const event of arr) {
+          const isMinted = await getIsEventNftsMinted(+event[2].toString());
+          if (!isMinted) notMintedArr.push(event[2].toString());
+        }
+        return notMintedArr;
+      };
+
+      getNotMintedEvents(eventsList)
+        .then((res) => setNotMintedEvents(res))
+        .catch((err) => console.log(err));
+    }
+  }, [eventsList]);
+
+  useEffect(() => {
+    if (eventsList && eventsList.length > 1 && account && notMintedEvents.length) {
       let filtredEvents = eventsList.filter(
         (item: any) =>
-          item[2].toString() !== '0' && item[4].toLowerCase() === account.toLowerCase(),
+          notMintedEvents.includes(item[2].toString()) &&
+          item[2].toString() !== '0' &&
+          item[4].toLowerCase() === account.toLowerCase(),
       );
 
       if (filtredEvents.length === 0) {
@@ -141,7 +191,7 @@ const ManageDrop = ({}) => {
     } else {
       setEventsActive(false);
     }
-  }, [eventsList, account]);
+  }, [eventsList, account, notMintedEvents]);
 
   const isSaveBtnActive = useMemo(() => {
     if (!account || !isEventOwner || users.length === 0) return true;
@@ -285,12 +335,12 @@ const ManageDrop = ({}) => {
             </div>
             <div>
               *Please upload an excel sheet field in the following format Column 1 - event
-              attendee’s email, Column 2 - Event attendee’s wallet addresses
+              attendee’s email, Column 2 - Event attendee’s Godwoken wallet addresses
             </div>
 
             <div className={s.actionBtnWrapp}>
               <button disabled={isSaveBtnActive} className="btn primary" onClick={makeDrop}>
-                {'Save drop'}
+                {'Launch drop'}
               </button>
             </div>
           </>
@@ -310,7 +360,7 @@ const ManageDrop = ({}) => {
 
         {isWaitingModalVisible && <WaitingModal setIsModalVisible={setIsModalSalesSettings} />}
       </ModalContainer>
-      <ToastContainer theme="colored" />
+      {/* <ToastContainer theme="colored" /> */}
     </div>
   );
 };

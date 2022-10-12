@@ -295,6 +295,17 @@ const Header = () => {
                       <span className={styles.error}>{signInError.signInPassword}</span>
                     )}
 
+                    <Link
+                      onClick={() => {
+                        setIsModalVisible(false);
+                        setIsWaitingModalVisible(false);
+                      }}
+                      className={styles.link}
+                      to="/forgot"
+                    >
+                      Forgot password?
+                    </Link>
+
                     <div className={styles.actionBtnWrapp}>
                       <button className="btn primary" type="submit">
                         Login
@@ -356,7 +367,7 @@ const Header = () => {
           />
         </>
       )}
-      <ToastContainer theme="colored" />
+      {/* <ToastContainer theme="colored" /> */}
     </>
   );
 };

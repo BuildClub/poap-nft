@@ -9,6 +9,8 @@ import About from '@modules/About';
 import League from '@modules/League';
 import CreateEvent from '@modules/CreateEvent';
 import Events from '@modules/Events';
+import ForgotPassword from '@modules/ForgotPassword';
+import ResetPassword from '@modules/ResetPassword';
 import ManageDrop from '@modules/ManageDrop';
 import Web3Wrapper from '@modules/web3/containers/Web3Wrapper';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -24,6 +26,8 @@ const modulesData = [
   { path: '/createEvent', title: 'usersNfts', component: CreateEvent },
   { path: '/manageDrop', title: 'usersNfts', component: ManageDrop },
   { path: '/events', title: 'events', component: Events },
+  { path: '/forgot', title: 'forgot', component: ForgotPassword },
+  { path: '/reset/:id', title: 'forgot', component: ResetPassword },
 ];
 
 const isBrowserSupportsHistory = 'pushState' in window.history;

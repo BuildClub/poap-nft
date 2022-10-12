@@ -1,5 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { Input } from 'antd';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import cn from 'classnames';
 import s from './CreateEvent.module.scss';
 import { BASE_URL } from '@utils/constants';
@@ -15,13 +14,13 @@ import * as Yup from 'yup';
 import { isAddress } from '@ethersproject/address';
 import { ToastContainer, toast } from 'react-toastify/dist/index';
 import 'react-toastify/dist/ReactToastify.css';
-import { formatAddress, formatFileName } from '@utils/index';
-
-const { TextArea } = Input;
+import { formatFileName } from '@utils/index';
+import { useAuth } from '@modules/common/hooks';
 
 const CreateEvent = ({}) => {
   const { authToken } = useContext(AppContext);
-  const { library, account } = useWeb3React();
+  const { account } = useWeb3React();
+  const { userEmail } = useAuth();
 
   const client = ipfsHttpClient({
     host: 'ipfs.infura.io',
@@ -40,6 +39,7 @@ const CreateEvent = ({}) => {
   const [isModalSalesSettings, setIsModalSalesSettings] = useState<boolean>(false);
   const [isErrorModalVisible, setIsErrorModalVisible] = useState<boolean>(false);
   const [isWaitingModalVisible, setIsWaitingModalVisible] = useState<boolean>(false);
+  const [fileError, setFileError] = useState<boolean>(false);
 
   const errorModalCloseBtn = useCallback(() => {
     setIsModalSalesSettings(false);
@@ -131,6 +131,7 @@ const CreateEvent = ({}) => {
         });
 
         resetForm();
+        setFileName('');
       } catch (error) {
         toast.error('Event have not created', {
           position: 'top-right',
@@ -149,8 +150,36 @@ const CreateEvent = ({}) => {
     },
   });
 
+  useEffect(() => {
+    if (account) {
+      setFieldValue('address', account);
+    }
+  }, [account]);
+
+  useEffect(() => {
+    if (userEmail) {
+      setFieldValue('email', userEmail);
+    }
+  }, [userEmail]);
+
   const setImage = async (e: any) => {
     const file = e.target.files[0];
+
+    if (
+      file.name.includes('.jpg') ||
+      file.name.includes('.jpeg') ||
+      file.name.includes('.png') ||
+      file.name.includes('.gif')
+    ) {
+      setFileError(false);
+    } else {
+      setFileError(true);
+      setFileName('');
+      return;
+    }
+
+    setFileError(false);
+
     setFileName(file.name);
 
     try {
@@ -247,6 +276,11 @@ const CreateEvent = ({}) => {
                 />
               </fieldset>
               {errors.img && touched.img && <span className={s.error}>{errors.img}</span>}
+              {fileError && (
+                <div className={s.error}>
+                  File extension is not supported. Supported extensions are jpg,png,jpeg,gif
+                </div>
+              )}
             </div>
             <div className={s.input}>
               <fieldset className={s.fakeBorder}>
@@ -291,7 +325,7 @@ const CreateEvent = ({}) => {
           />
         )}
       </ModalContainer>
-      <ToastContainer theme="colored" />
+      {/* <ToastContainer theme="colored" /> */}
     </div>
   );
 };

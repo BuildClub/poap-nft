@@ -48,16 +48,20 @@ const ForgotPassword = ({}) => {
 
         resetForm();
       } catch (error) {
-        toast.error("Email update link wasn't created", {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
         console.log('Error uploading file:', error);
+        //@ts-ignore
+        if (error.response && error.response.data && error.response.data.message) {
+          //@ts-ignore
+          toast.error(error.response.data.message, {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
       }
     },
   });

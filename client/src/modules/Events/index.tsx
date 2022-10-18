@@ -262,7 +262,7 @@ const Events = () => {
           </ul>
         </section>
       </div>
-      {/* <ToastContainer theme="colored" /> */}
+      <ToastContainer theme="colored" />
     </div>
   );
 };

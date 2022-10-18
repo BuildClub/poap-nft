@@ -367,7 +367,7 @@ const Header = () => {
           />
         </>
       )}
-      {/* <ToastContainer theme="colored" /> */}
+      <ToastContainer theme="colored" />
     </>
   );
 };

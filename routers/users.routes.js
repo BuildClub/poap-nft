@@ -21,20 +21,20 @@ userRouter.get('/', async (req, res) => {
 
 userRouter.post('/forgot', async (req, res) => {
   try {
-    console.log('FORGOT', req.body);
     const thisUser = await User.findOne({ email: req.body.email });
     console.log('thisUser', thisUser);
-    if (thisUser) {
-      const id = uuidv1();
-      console.log('id', id);
-      const request = new Request({
-        email: thisUser.email,
-        id,
-      });
-      console.log('request', request);
-      await request.save();
-      sendResetMail(thisUser.email, id);
+    if (!thisUser) {
+      return res.status(404).send({ message: 'User with this email not found' });
     }
+    const id = uuidv1();
+    console.log('id', id);
+    const request = new Request({
+      email: thisUser.email,
+      id,
+    });
+    console.log('request', request);
+    await request.save();
+    sendResetMail(thisUser.email, id);
     res.status(200).json({ message: 'Email have been sent' });
   } catch (error) {
     return res.status(500).json({ message: 'Something went wrong' });

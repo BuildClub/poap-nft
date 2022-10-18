@@ -360,7 +360,7 @@ const ManageDrop = ({}) => {
 
         {isWaitingModalVisible && <WaitingModal setIsModalVisible={setIsModalSalesSettings} />}
       </ModalContainer>
-      {/* <ToastContainer theme="colored" /> */}
+      <ToastContainer theme="colored" />
     </div>
   );
 };

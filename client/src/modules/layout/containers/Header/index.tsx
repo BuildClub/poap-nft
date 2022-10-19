@@ -117,10 +117,10 @@ const Header = () => {
       try {
         const { data } = await axios.post(`${BASE_URL}/users/login`, {
           password: signInValues.signInPassword,
-          email: signInValues.signInEmail,
+          email: signInValues.signInEmail.toLowerCase(),
         });
 
-        login(data.email, data.token, data.userId, data.isAdmin);
+        login(data.email.toLowerCase(), data.token, data.userId, data.isAdmin);
         setAuthToken(data.token);
         setIsAdmin(data.isAdmin);
         resetForm();
@@ -164,10 +164,10 @@ const Header = () => {
       try {
         const { data } = await axios.post(`${BASE_URL}/users/register`, {
           password: signUpValues.signUpPassword,
-          email: signUpValues.signUpEmail,
+          email: signUpValues.signUpEmail.toLowerCase(),
         });
 
-        login(data.email, data.token, data.userId, data.isAdmin);
+        login(data.email.toLowerCase(), data.token, data.userId, data.isAdmin);
         setAuthToken(data.token);
         setIsAdmin(data.isAdmin);
         resetSignUpForm();

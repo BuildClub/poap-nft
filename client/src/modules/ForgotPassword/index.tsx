@@ -31,7 +31,7 @@ const ForgotPassword = ({}) => {
     onSubmit: async () => {
       try {
         const { data } = await axios.post(`${BASE_URL}/users/forgot`, {
-          email: values.email,
+          email: values.email.toLowerCase(),
         });
         console.log('data', data);
         setEmailSent(true);

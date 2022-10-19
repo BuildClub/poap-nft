@@ -42,7 +42,7 @@ const ResetPassword = ({}) => {
         console.log('data', data);
         setEmailSent(true);
 
-        toast.success(`${data.message}`, {
+        toast.success(`Your password was successfully restored`, {
           position: 'top-right',
           autoClose: 5000,
           hideProgressBar: false,
@@ -53,7 +53,9 @@ const ResetPassword = ({}) => {
         });
 
         resetForm();
-        history.push('/');
+        setTimeout(() => {
+          history.push('/');
+        }, 1000);
       } catch (error) {
         toast.error("Email wasn't updated", {
           position: 'top-right',

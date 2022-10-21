@@ -61,7 +61,7 @@ router.post('/createEvent', isAuth, isAdmin, async (req, res) => {
       {
         to: contractAddress,
         value: 0,
-        gas: '350000',
+        gas: '500000',
         data: trans,
         gasPrice: 400000000000000,
       },
@@ -102,7 +102,7 @@ router.post('/addUserToEvent', isAuth, isAdmin, async (req, res) => {
       {
         to: contractAddress,
         value: 0,
-        gas: '350000',
+        gas: '500000',
         data: trans,
         gasPrice: 400000000000000,
       },

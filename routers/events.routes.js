@@ -3,6 +3,7 @@ const Event = require('../models/EventModel.js');
 const isAuth = require('../utils/isAuth.js');
 const isAdmin = require('../utils/isAdmin.js');
 const Web3 = require('web3');
+const ethers = require('ethers');
 const LINKS_NFT_ABI = require('../client/src/modules/web3/abi/LinksNFT.json');
 
 const router = express.Router();
@@ -45,6 +46,26 @@ router.post('/createEvent', isAuth, isAdmin, async (req, res) => {
     const web3 = new Web3(process.env.GW_RPC_URL); // Your Web3 instance
     const contractAddress = process.env.CONTRACT_ADDRESS;
 
+    const provider = new ethers.providers.JsonRpcProvider(process.env.GW_RPC_URL);
+    const ethersContract = new ethers.Contract(contractAddress, LINKS_NFT_ABI, provider);
+    const signer = provider.getSigner('0x91Bbc2A6C3C7006e26Cd1CF6e27B0FeBA94377cE');
+    const contractWithSigner = ethersContract.connect(signer);
+
+    const estimation = await contractWithSigner.estimateGas.createEvent(
+      req.body.ownerAddress,
+      req.body.eventName,
+      req.body.eventDescription,
+      req.body.email,
+      req.body.eventUri,
+    );
+
+    const calculateGasMargin = (value) =>
+      value
+        .mul(ethers.BigNumber.from(10000).add(ethers.BigNumber.from(2500)))
+        .div(ethers.BigNumber.from(10000));
+
+    const estimateGasValue = calculateGasMargin(estimation).toString();
+
     const contract = new web3.eth.Contract(LINKS_NFT_ABI, contractAddress);
 
     let trans = contract.methods
@@ -61,7 +82,7 @@ router.post('/createEvent', isAuth, isAdmin, async (req, res) => {
       {
         to: contractAddress,
         value: 0,
-        gas: '500000',
+        gas: estimateGasValue,
         data: trans,
         gasPrice: 400000000000000,
       },
@@ -94,6 +115,23 @@ router.post('/addUserToEvent', isAuth, isAdmin, async (req, res) => {
     const web3 = new Web3(process.env.GW_RPC_URL); // Your Web3 instance
     const contractAddress = process.env.CONTRACT_ADDRESS;
 
+    const provider = new ethers.providers.JsonRpcProvider(process.env.GW_RPC_URL);
+    const ethersContract = new ethers.Contract(contractAddress, LINKS_NFT_ABI, provider);
+    const signer = provider.getSigner('0x91Bbc2A6C3C7006e26Cd1CF6e27B0FeBA94377cE');
+    const contractWithSigner = ethersContract.connect(signer);
+
+    const estimation = await contractWithSigner.estimateGas.addUserToEvent(
+      req.body.users,
+      req.body.eventId,
+    );
+
+    const calculateGasMargin = (value) =>
+      value
+        .mul(ethers.BigNumber.from(10000).add(ethers.BigNumber.from(2500)))
+        .div(ethers.BigNumber.from(10000));
+
+    const estimateGasValue = calculateGasMargin(estimation).toString();
+
     const contract = new web3.eth.Contract(LINKS_NFT_ABI, contractAddress);
 
     let trans = contract.methods.addUserToEvent(req.body.users, req.body.eventId).encodeABI();
@@ -102,7 +140,7 @@ router.post('/addUserToEvent', isAuth, isAdmin, async (req, res) => {
       {
         to: contractAddress,
         value: 0,
-        gas: '500000',
+        gas: estimateGasValue,
         data: trans,
         gasPrice: 400000000000000,
       },

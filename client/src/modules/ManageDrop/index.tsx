@@ -1,45 +1,30 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { Input, Select, Tabs, Tooltip, DatePicker, Space, DatePickerProps, Skeleton } from 'antd';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Select, Skeleton } from 'antd';
 import cn from 'classnames';
 import s from './ManageDrop.module.scss';
 import { LINKS_NFT_ADDRESS, BASE_URL } from '@utils/constants';
-import {
-  usePoapLinksSignContract,
-  usePoapLinksUnsignContract,
-} from '@modules/common/hooks/useContract';
+import { usePoapLinksSignContract } from '@modules/common/hooks/useContract';
 import { useWeb3React } from '@web3-react/core';
-import { buildQueryGodwoken } from '@utils/contracts';
+import { buildQuery, buildQueryGodwoken } from '@utils/contracts';
 import { useMutation, useQuery } from 'react-query';
 import {
-  ADD_EVENT_KEY,
   EVENTS_LIST_KEY,
   GET_IS_EVENT_NFTS_MINTERD_KEY,
   SET_EVENT_MINTERS_KEY,
 } from '@utils/queryKeys';
-import { create as ipfsHttpClient } from 'ipfs-http-client';
 import * as XLSX from 'xlsx';
 import axios from 'axios';
 import ModalContainer from '@modules/look/ModalContainer';
 import ErrorModal from '@modules/look/Wallet/ErrorModal';
 import WaitingModal from '@modules/look/Wallet/WaitingModal';
-import refreshIcon from '@assets/images/refresh-light.svg';
-import refreshIconDark from '@assets/images/refresh.svg';
-import AppContext from '@modules/layout/context/AppContext';
 import { ToastContainer, toast } from 'react-toastify/dist/index';
 import 'react-toastify/dist/ReactToastify.css';
 
-const { TextArea } = Input;
 const { Option } = Select;
 
 const ManageDrop = ({}) => {
-  const { account, chainId, library } = useWeb3React();
+  const { account } = useWeb3React();
 
-  const { isLightMode } = useContext(AppContext);
-
-  //@ts-ignore
-  const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
-
-  const [fileUrl, setFileUrl] = useState<string>('');
   const [fileName, setFileName] = useState<string>('');
   const [eventId, setEventId] = useState<number | null>(null);
   const [eventsActive, setEventsActive] = useState<boolean>(false);
@@ -55,20 +40,21 @@ const ManageDrop = ({}) => {
 
   const {
     allEvents: allEventsQuery,
+    addUserToEvent: setEventMintersQuery,
     getIsEventNftsMinted: getIsEventNftsMintedQuery,
-  } = usePoapLinksUnsignContract(LINKS_NFT_ADDRESS, true);
+    estimateGas: {
+      addUserToEvent: addUserToEventEstimate,
+      getIsEventNftsMinted: getIsEventNftsMintedEstimate,
+      allEvents: allEventsEstimate,
+    },
+  } = usePoapLinksSignContract(LINKS_NFT_ADDRESS, true);
 
   const { data: eventsList, isLoading: isEventsListLoading, refetch: refetchEventsList } = useQuery(
     EVENTS_LIST_KEY,
-    (): Promise<any> => buildQueryGodwoken(allEventsQuery, [], 500000),
+    (): Promise<any> => buildQuery(allEventsQuery, [], allEventsEstimate),
     {
       onError: (err) => console.log(err, EVENTS_LIST_KEY),
     },
-  );
-
-  const { addUserToEvent: setEventMintersQuery } = usePoapLinksSignContract(
-    LINKS_NFT_ADDRESS,
-    true,
   );
 
   const errorModalCloseBtn = useCallback(() => {
@@ -84,7 +70,7 @@ const ManageDrop = ({}) => {
     `${SET_EVENT_MINTERS_KEY}_${eventId}`,
     (): Promise<any> =>
       //@ts-ignore
-      buildQueryGodwoken(setEventMintersQuery, [users, +eventId], 500000),
+      buildQuery(setEventMintersQuery, [users, +eventId], addUserToEventEstimate),
     {
       onError: (err) => console.log(err, `${SET_EVENT_MINTERS_KEY}_${eventId}`),
     },
@@ -98,7 +84,7 @@ const ManageDrop = ({}) => {
     `${GET_IS_EVENT_NFTS_MINTERD_KEY}_${eventId}`,
     (currentEvent: number): Promise<any> =>
       //@ts-ignore
-      buildQueryGodwoken(getIsEventNftsMintedQuery, [currentEvent], 500000),
+      buildQuery(getIsEventNftsMintedQuery, [currentEvent], getIsEventNftsMintedEstimate),
     {
       onError: (err) => console.log(err, `${GET_IS_EVENT_NFTS_MINTERD_KEY}_${eventId}`),
     },

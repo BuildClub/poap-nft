@@ -60,15 +60,13 @@ export const buildQuery = async <T>(
   let tx;
   try {
     if (estimateGas) {
-      // console.log('estimateGas', method);
       const gasLimit = await estimateGas(...args, options);
+
       tx = await method(...args, {
         gasLimit: calculateGasMargin(gasLimit as BigNumberETH),
         ...options,
       });
     } else {
-      // console.log('else', method);
-
       tx = await method(...args, options);
     }
     if (tx?.hash) {

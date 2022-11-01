@@ -1,9 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import {
-  usePoapLinksSignContract,
-  usePoapLinksUnsignContract,
-} from '@modules/common/hooks/useContract';
+import { useCallback, useEffect, useState } from 'react';
+import { usePoapLinksUnsignContract } from '@modules/common/hooks/useContract';
 import { buildQueryGodwoken } from '@utils/contracts';
 import { LINKS_NFT_ADDRESS } from '@utils/constants';
 
@@ -12,7 +9,7 @@ function useERC1155Tokens(address: string) {
   const [total, setTotal] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { chainId, account } = useWeb3React();
+  const { account } = useWeb3React();
 
   const {
     balanceOf: balanceOfQuery,

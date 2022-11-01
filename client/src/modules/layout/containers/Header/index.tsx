@@ -8,8 +8,6 @@ import WalletConnect from '@modules/look/Wallet/WalletConnect';
 import Navigation from '@modules/look/Navigation';
 import { useAuth, useMediaQuery } from '@modules/common/hooks';
 import cx from 'classnames';
-import themeModeIcon from '@assets/images/mode.png';
-import themeModeIconLight from '@assets/images/mode_light.png';
 
 import lightIcon from '@assets/images/switchTheme/light.png';
 import darkIcon from '@assets/images/switchTheme/dark.png';
@@ -60,7 +58,6 @@ const Header = () => {
   }, [authToken]);
 
   const handleAuth = useCallback(() => {
-    // setIsWaitingModalVisible(true);
     if (!token) {
       setIsModalVisible(true);
     } else {
@@ -228,10 +225,7 @@ const Header = () => {
 
             {isBreakpoint && (
               <>
-                <div
-                  // onClick={navIconToggle}
-                  className={cx(styles.nav_items, activeNav && styles.nav_items_active)}
-                >
+                <div className={cx(styles.nav_items, activeNav && styles.nav_items_active)}>
                   <Navigation
                     themeMode={<ToggleThemeMode />}
                     walletConnect={<WalletConnect close={navIconToggle} isWalletBtn />}
@@ -246,8 +240,6 @@ const Header = () => {
                 {isAuthorize ? 'Logout' : 'Login'}
               </Button>
             </>
-
-            {/* <div>{isAuthorize ? 'Logout' : 'Login'}</div> */}
           </div>
         </div>
         <ModalContainer

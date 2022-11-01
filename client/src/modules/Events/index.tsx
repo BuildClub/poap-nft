@@ -1,27 +1,32 @@
-import { Skeleton, Tooltip } from 'antd';
-import NftCardsList from '@modules/account/components/NftCardsList/index';
 import styles from './Events.module.scss';
 import cn from 'classnames';
-import CheckedIcon from '@assets/images/NftCards/checked-icon.svg';
-import { formatAddress, resolveLink } from '@utils/index';
-import { useERC1155Tokens, useMediaQuery } from '@modules/common/hooks';
-import { useHistory, useParams } from 'react-router';
-import { ReactNode, useContext, useEffect, useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
+import { useMediaQuery } from '@modules/common/hooks';
+import { useHistory } from 'react-router';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { BASE_URL } from '@utils/constants';
 import AppContext from '@modules/layout/context/AppContext';
 import NftImageNotFound from '@modules/common/components/NftImageNotFound';
-import NftImageSource from '@modules/common/components/NftImageSource';
 import AsyncImage from '@modules/common/components/AsyncImage';
 import { ToastContainer, toast } from 'react-toastify/dist/index';
 import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment';
+import ModalContainer from '@modules/look/ModalContainer';
+import ErrorModal from '@modules/look/Wallet/ErrorModal';
+import WaitingModal from '@modules/look/Wallet/WaitingModal';
 
 const Events = () => {
-  const { address } = useParams<{ address: string }>();
   const [events, setEvents] = useState<any>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isModalSalesSettings, setIsModalSalesSettings] = useState<boolean>(false);
+  const [isErrorModalVisible, setIsErrorModalVisible] = useState<boolean>(false);
+  const [isWaitingModalVisible, setIsWaitingModalVisible] = useState<boolean>(false);
+  const [approveLoading, setApproveLoading] = useState<boolean>(false);
+
+  const errorModalCloseBtn = useCallback(() => {
+    setIsModalSalesSettings(false);
+    setIsErrorModalVisible(false);
+  }, []);
 
   const { authToken, isAdmin } = useContext(AppContext);
 
@@ -60,45 +65,15 @@ const Events = () => {
 
   const isBreakpointMobile = useMediaQuery(1024);
 
-  const formatCollectionName = (name: string, id: string) => {
-    const symbolLength = () => {
-      return isBreakpointMobile ? 30 : 45;
-    };
-
-    if (name) {
-      if (name.length > symbolLength()) {
-        const nameWithId = name + <span>#{formatAddress(id)}</span>;
-        return <>{nameWithId.slice(0, symbolLength()) + '...'}</>;
-      } else {
-        return `${name} #${formatAddress(id)}`;
-      }
-    } else {
-      return '';
-    }
-  };
-
-  const formatCardName = (name: string) => {
-    const symbolLength = () => {
-      return isBreakpointMobile ? 20 : 25;
-    };
-
-    if (name) {
-      if (name.length > symbolLength()) {
-        return <>{name.slice(0, symbolLength()) + '...'}</>;
-      } else {
-        return name;
-      }
-    } else {
-      return '';
-    }
-  };
-
   const imageErrorHandler = () => {
     console.log('Image error');
   };
 
   const approveEventHandler = async (event: any) => {
     try {
+      setApproveLoading(true);
+      setIsWaitingModalVisible(true);
+      setIsModalSalesSettings(true);
       const { data } = await axios.post(
         `${BASE_URL}/events/createEvent`,
         {
@@ -124,6 +99,10 @@ const Events = () => {
       });
 
       getEvents();
+
+      setIsWaitingModalVisible(false);
+      setIsModalSalesSettings(false);
+      setApproveLoading(false);
 
       toast.success('Event approved', {
         position: 'top-right',
@@ -152,6 +131,10 @@ const Events = () => {
       ) {
         errorMsg = 'Insufficient funds on the admin account';
       }
+      setIsWaitingModalVisible(false);
+      setIsModalSalesSettings(false);
+      setApproveLoading(false);
+      setIsErrorModalVisible(true);
       toast.error(errorMsg ? errorMsg : 'Something went wrong', {
         position: 'top-right',
         autoClose: 3000,
@@ -247,11 +230,19 @@ const Events = () => {
                         </div>
                       </div>
                       <div className={styles.btns_wrapper}>
-                        <button className="btn primary" onClick={() => approveEventHandler(item)}>
+                        <button
+                          className="btn primary"
+                          disabled={approveLoading}
+                          onClick={() => approveEventHandler(item)}
+                        >
                           Approve event
                         </button>
 
-                        <button className="btn secondary" onClick={() => rejectEventHandler(item)}>
+                        <button
+                          className="btn secondary"
+                          disabled={approveLoading}
+                          onClick={() => rejectEventHandler(item)}
+                        >
                           Reject event
                         </button>
                       </div>
@@ -263,6 +254,21 @@ const Events = () => {
         </section>
       </div>
       <ToastContainer theme="colored" />
+      <ModalContainer
+        className="Modal-container padding-reset"
+        isVisible={isModalSalesSettings}
+        handleCancel={() => {
+          setIsWaitingModalVisible(false);
+          setIsErrorModalVisible(false);
+        }}
+        width={468}
+      >
+        {isErrorModalVisible && <ErrorModal errorModalCloseBtn={errorModalCloseBtn} />}
+
+        {isWaitingModalVisible && (
+          <WaitingModal text="Approving event..." setIsModalVisible={setIsModalSalesSettings} />
+        )}
+      </ModalContainer>
     </div>
   );
 };

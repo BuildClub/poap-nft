@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 
 import { injected, network, walletConnect } from '@utils/connectors';
-// import { setupNetwork } from '@utils/web3';
 
 const useEagerConnect = () => {
   const { activate, active } = useWeb3React();

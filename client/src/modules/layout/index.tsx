@@ -1,7 +1,7 @@
-import React, { FC, ReactNode, useCallback, useEffect, useState } from 'react';
+import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import AppContext from './context/AppContext';
-import { NETWORK, LOCAL_STORAGE } from '@modules/common/const';
+import { LOCAL_STORAGE } from '@modules/common/const';
 import Header from '@modules/layout/containers/Header';
 import Footer from '@modules/layout/containers/Footer';
 import PageNotFound from '@modules/staticPages/PageNotFound';
@@ -35,15 +35,6 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   const { logout } = useAuth();
   const history = useHistory();
 
-  //************************* */
-  // const setDefaultNetwork = () => {
-  //   const localStorageNetworkKey = localStorage.getItem('network');
-  //   if (!localStorageNetworkKey) {
-  //     localStorage.setItem(LOCAL_STORAGE.NETWORK, Object.keys(NETWORK)[0]);
-  //   }
-  // };
-  //************************* */
-
   const context = {
     isLightMode,
     handleSwitchLightMode,
@@ -54,12 +45,6 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
     isAdmin,
     setIsAdmin,
   };
-
-  //************************* */
-  // useEffect(() => {
-  //   setDefaultNetwork();
-  // }, []);
-  //************************* */
 
   const setNetwork = useCallback(async () => {
     // if (library) {
@@ -101,7 +86,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
       if (authToken) {
         checkAuth();
       }
-    }, 5000); // in milliseconds
+    }, 5000);
     return () => clearInterval(intervalId);
   }, [authToken]);
 
@@ -109,7 +94,6 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
     <>
       <div className="wrapper">
         <div className="blur"></div>
-        {/* <div className="blur-right"></div> */}
         <AppContext.Provider value={context}>
           {pathname !== '/404' ? (
             <>

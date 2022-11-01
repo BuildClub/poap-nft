@@ -12,7 +12,7 @@ import AppContext from '@modules/layout/context/AppContext';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { isAddress } from '@ethersproject/address';
-import { ToastContainer, toast } from 'react-toastify/dist/index';
+import { toast } from 'react-toastify/dist/index';
 import 'react-toastify/dist/ReactToastify.css';
 import { formatFileName } from '@utils/index';
 import { useAuth } from '@modules/common/hooks';
@@ -48,10 +48,8 @@ const CreateEvent = ({}) => {
 
   const isSubmitBtnActive = useMemo(() => {
     if (!authToken) return true;
-    // if (!account || !isRoleAdmin) return true;
     return false;
   }, [authToken]);
-  // }, [account, isRoleAdmin]);
 
   const {
     handleChange,
@@ -193,17 +191,6 @@ const CreateEvent = ({}) => {
     }
   };
 
-  // useEffect(() => {
-  //   async function getBal() {
-  //     let balance = await library.getBalance('0x2dA4a1f1cBdfa7F1D4E49c1db5d1AeE10d78A814');
-  //     console.log('BALANCE', balance);
-  //     console.log('BALANCE QTY', balance.toString());
-  //   }
-  //   if (library) {
-  //     getBal();
-  //   }
-  // }, [library]);
-
   return (
     <div className="container">
       <form onSubmit={handleSubmit} className={s.inner}>
@@ -300,7 +287,6 @@ const CreateEvent = ({}) => {
 
           <div className={s.actionBtnWrapp}>
             <button disabled={isSubmitBtnActive} type="submit" className="btn primary">
-              {/* <button disabled={isSubmitBtnActive} className="btn primary" onClick={createEvent}> */}
               {'Create'}
             </button>
           </div>
@@ -319,13 +305,11 @@ const CreateEvent = ({}) => {
 
         {isWaitingModalVisible && (
           <WaitingModal
-            text="Your event has been submitted for approval. Please check your inbox and expect up to 24 hours for event's approval.
-"
+            text="Your event has been submitted for approval. Please check your inbox and expect up to 24 hours for event's approval."
             setIsModalVisible={setIsModalSalesSettings}
           />
         )}
       </ModalContainer>
-      {/* <ToastContainer theme="colored" /> */}
     </div>
   );
 };

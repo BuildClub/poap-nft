@@ -221,6 +221,13 @@
 
   .input {
     width: 100%;
+    &.refresh {
+      display: flex;
+      img {
+        margin-left: 10px;
+        cursor: pointer;
+      }
+    }
   }
 
   .inputDate {

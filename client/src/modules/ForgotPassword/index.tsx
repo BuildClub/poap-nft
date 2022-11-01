@@ -2,9 +2,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import cn from 'classnames';
 import s from './ForgotPassword.module.scss';
 import { BASE_URL } from '@utils/constants';
-import { useWeb3React } from '@web3-react/core';
 import axios from 'axios';
-import AppContext from '@modules/layout/context/AppContext';
 import { toast } from 'react-toastify/dist/index';
 import 'react-toastify/dist/ReactToastify.css';
 import { useFormik } from 'formik';

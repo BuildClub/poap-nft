@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Select, Skeleton } from 'antd';
 import cn from 'classnames';
 import s from './ManageDrop.module.scss';
 import { LINKS_NFT_ADDRESS, BASE_URL } from '@utils/constants';
 import { usePoapLinksSignContract } from '@modules/common/hooks/useContract';
 import { useWeb3React } from '@web3-react/core';
-import { buildQuery, buildQueryGodwoken } from '@utils/contracts';
+import { buildQuery } from '@utils/contracts';
 import { useMutation, useQuery } from 'react-query';
 import {
   EVENTS_LIST_KEY,
@@ -17,6 +17,9 @@ import axios from 'axios';
 import ModalContainer from '@modules/look/ModalContainer';
 import ErrorModal from '@modules/look/Wallet/ErrorModal';
 import WaitingModal from '@modules/look/Wallet/WaitingModal';
+import refreshIcon from '@assets/images/refresh-light.svg';
+import refreshIconDark from '@assets/images/refresh.svg';
+import AppContext from '@modules/layout/context/AppContext';
 import { ToastContainer, toast } from 'react-toastify/dist/index';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -24,6 +27,7 @@ const { Option } = Select;
 
 const ManageDrop = ({}) => {
   const { account } = useWeb3React();
+  const { isLightMode } = useContext(AppContext);
 
   const [fileName, setFileName] = useState<string>('');
   const [eventId, setEventId] = useState<number | null>(null);
@@ -62,11 +66,7 @@ const ManageDrop = ({}) => {
     setIsErrorModalVisible(false);
   }, []);
 
-  const {
-    data: setEventMintersTx,
-    mutateAsync: setEventMinters,
-    isLoading: isSetEventMintersLoading,
-  } = useMutation(
+  const { mutateAsync: setEventMinters, isLoading: isSetEventMintersLoading } = useMutation(
     `${SET_EVENT_MINTERS_KEY}_${eventId}`,
     (): Promise<any> =>
       //@ts-ignore
@@ -76,11 +76,7 @@ const ManageDrop = ({}) => {
     },
   );
 
-  const {
-    data: getIsEventNftsMintedTx,
-    mutateAsync: getIsEventNftsMinted,
-    isLoading: isEventNftsMintedLoading,
-  } = useMutation(
+  const { mutateAsync: getIsEventNftsMinted } = useMutation(
     `${GET_IS_EVENT_NFTS_MINTERD_KEY}_${eventId}`,
     (currentEvent: number): Promise<any> =>
       //@ts-ignore
@@ -89,14 +85,6 @@ const ManageDrop = ({}) => {
       onError: (err) => console.log(err, `${GET_IS_EVENT_NFTS_MINTERD_KEY}_${eventId}`),
     },
   );
-
-  useEffect(() => {
-    console.log('setEventMintersTx', setEventMintersTx);
-  }, [setEventMintersTx]);
-
-  useEffect(() => {
-    console.log('isSetEventMintersLoading', isSetEventMintersLoading);
-  }, [isSetEventMintersLoading]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -190,18 +178,18 @@ const ManageDrop = ({}) => {
     try {
       setIsWaitingModalVisible(true);
       setIsModalSalesSettings(true);
-      await setEventMinters();
+      const tx = await setEventMinters();
 
-      setTimeout(async () => {
-        const { data } = await axios.post(`${BASE_URL}/sendmail`, {
-          to: emails,
-          subject: 'You have received the memo nft',
-          html:
-            '</br > <br /> Here is the link of the memo nft : <a href="https://collectpups.com">Look at your nft</a><br /><br /> Best Regards.',
-        });
-        setIsWaitingModalVisible(false);
-        setIsModalSalesSettings(false);
-      }, 40000);
+      const receipt = await tx.wait();
+
+      const { data } = await axios.post(`${BASE_URL}/sendmail`, {
+        to: emails,
+        subject: 'You have received the memo nft',
+        html:
+          '</br > <br /> Here is the link of the memo nft : <a href="https://collectpups.com">Look at your nft</a><br /><br /> Best Regards.',
+      });
+      setIsWaitingModalVisible(false);
+      setIsModalSalesSettings(false);
     } catch (error) {
       setIsWaitingModalVisible(false);
       setIsModalSalesSettings(false);
@@ -211,7 +199,6 @@ const ManageDrop = ({}) => {
   };
 
   const setEvent = (e: number) => {
-    // console.log('Set Event', e);
     setEventId(e);
   };
 
@@ -235,11 +222,8 @@ const ManageDrop = ({}) => {
       const wb = XLSX.read(bstr, { type: 'binary' });
       const wsname = wb.SheetNames[0];
       const ws = wb.Sheets[wsname];
-      // console.log('ws', ws);
-
       //@ts-ignore
       const dataJson = XLSX.utils.sheet_to_json(ws, { header: 1 });
-      // console.log('dataJson', dataJson);
       //@ts-ignore
       const usersEmails = dataJson.map((item) => item[0]);
       //@ts-ignore
@@ -269,9 +253,9 @@ const ManageDrop = ({}) => {
         {eventsActive && (
           <>
             <div className={s.inputs}>
-              <div className={s.input}>
+              <div className={cn(s.input, s.refresh)}>
                 <fieldset className={cn(s.fakeBorder)}>
-                  <legend className={s.fakeBorder__text}>Select event</legend>
+                  <legend className={s.fakeBorder__text}>Select event </legend>
                   <div className={'custom-select events'}>
                     <Select
                       defaultValue={events[0][0].toString()}
@@ -285,6 +269,11 @@ const ManageDrop = ({}) => {
                     </Select>
                   </div>
                 </fieldset>
+                <img
+                  src={isLightMode ? refreshIconDark : refreshIcon}
+                  alt="Refetch Image"
+                  onClick={handleRefresh}
+                />
               </div>
 
               <div className={s.input}>

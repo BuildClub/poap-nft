@@ -25,7 +25,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const { Option } = Select;
 
-const ManageDrop = ({}) => {
+const ManageDrop = () => {
   const { account } = useWeb3React();
   const { isLightMode } = useContext(AppContext);
 
@@ -69,9 +69,12 @@ const ManageDrop = ({}) => {
 
   const { mutateAsync: setEventMinters, isLoading: isSetEventMintersLoading } = useMutation(
     `${SET_EVENT_MINTERS_KEY}_${eventId}`,
-    (): Promise<any> =>
+    (): Promise<any> => {
+      console.log('test', eventId);
+      console.log('users', users);
       //@ts-ignore
-      buildQuery(setEventMintersQuery, [users, +eventId], addUserToEventEstimate),
+      return buildQuery(setEventMintersQuery, [users, +eventId], addUserToEventEstimate);
+    },
     {
       onError: (err) => console.log(err, `${SET_EVENT_MINTERS_KEY}_${eventId}`),
     },
@@ -203,6 +206,7 @@ const ManageDrop = ({}) => {
   };
 
   const setEvent = (e: number) => {
+    console.log('event number:', e);
     setEventId(e);
   };
 

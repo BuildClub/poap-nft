@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  web:
+    container_name: poap_web
+    build: .
+    restart: always
+    networks:
+      - mongo_network
+    ports:
+      - 5002:5002
+    depends_on:
+      - mongo
+    env_file:
+      - .env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "512m"
+
+  mongo:
+    container_name: poap_mongo
+    image: mongo:6.0.2
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_DATABASE=poap-db
+    volumes:
+      - mongo_data:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - mongo_network
+    ports:
+      - 27017:27017
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "512m"
+
+networks:
+  mongo_network:
+    driver: bridge
+
+volumes:
+  mongo_data:

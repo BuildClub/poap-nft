@@ -49,20 +49,9 @@ export interface NftList {
   4: WidgetNftListTypes;
 }
 
-// export const LINKS_NFT_ADDRESS = '0xdcbd950F8246cD1e2f4Da41CD91219abEB823935'; //testnet
-export const LINKS_NFT_ADDRESS = '0x42B28E2Dc1843A636347C1D521d08711Ac18B2FB'; //mainnet
+export const LINKS_NFT_ADDRESS = process.env.REACT_APP_CONTRACT_ADDRESS as string;
 
-export const CONTRACTS: Contracts = {
-  Links: {
-    address: {
-      71402: '0x42B28E2Dc1843A636347C1D521d08711Ac18B2FB',
-      71401: '0xdcbd950F8246cD1e2f4Da41CD91219abEB823935',
-    },
-  },
-};
-
-// export const BASE_URL = 'http://localhost:5002';
-export const BASE_URL = 'https://collectpups.com';
+export const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 export interface INftCard {
   amount?: string;

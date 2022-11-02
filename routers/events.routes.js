@@ -48,7 +48,7 @@ router.post('/createEvent', isAuth, isAdmin, async (req, res) => {
 
     const provider = new ethers.providers.JsonRpcProvider(process.env.GW_RPC_URL);
     const ethersContract = new ethers.Contract(contractAddress, LINKS_NFT_ABI, provider);
-    const signer = provider.getSigner('0x91Bbc2A6C3C7006e26Cd1CF6e27B0FeBA94377cE');
+    const signer = provider.getSigner(process.env.SENDER_ADDRESS);
     const contractWithSigner = ethersContract.connect(signer);
 
     const estimation = await contractWithSigner.estimateGas.createEvent(
@@ -97,6 +97,10 @@ router.post('/createEvent', isAuth, isAdmin, async (req, res) => {
 
     const updatedEvent = await event.save();
 
+    console.log('updatedEvent', updatedEvent);
+
+    console.log('TX', tx);
+
     res.status(201).send({
       massage: 'Event approved',
     });
@@ -113,7 +117,7 @@ router.post('/addUserToEvent', isAuth, isAdmin, async (req, res) => {
 
     const provider = new ethers.providers.JsonRpcProvider(process.env.GW_RPC_URL);
     const ethersContract = new ethers.Contract(contractAddress, LINKS_NFT_ABI, provider);
-    const signer = provider.getSigner('0x91Bbc2A6C3C7006e26Cd1CF6e27B0FeBA94377cE');
+    const signer = provider.getSigner(process.env.SENDER_ADDRESS);
     const contractWithSigner = ethersContract.connect(signer);
 
     const estimation = await contractWithSigner.estimateGas.addUserToEvent(

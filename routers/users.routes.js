@@ -22,17 +22,14 @@ userRouter.get('/', async (req, res) => {
 userRouter.post('/forgot', async (req, res) => {
   try {
     const thisUser = await User.findOne({ email: req.body.email });
-    console.log('thisUser', thisUser);
     if (!thisUser) {
       return res.status(404).send({ message: 'User with this email not found' });
     }
     const id = uuidv1();
-    console.log('id', id);
     const request = new Request({
       email: thisUser.email,
       id,
     });
-    console.log('request', request);
     await request.save();
     sendResetMail(thisUser.email, id);
     res.status(200).json({ message: 'Email have been sent' });
@@ -125,64 +122,6 @@ userRouter.post('/register', async (req, res) => {
     res.status(500).send({ message: 'Something went wrong' });
   }
 });
-
-// userRouter.put('/update', isAuth, async (req, res) => {
-//   try {
-//     console.log(req.body);
-//     const user = await User.findOne({ _id: req.user._id });
-//     user.first_name = req.body.first_name;
-//     user.last_name = req.body.last_name;
-//     user.phone_number = req.body.phone_number;
-//     user.email = req.body.email;
-//     const updatedUser = await user.save();
-//     console.log(updatedUser);
-//     const response = {
-//       _id: updatedUser._id,
-//       first_name: updatedUser.first_name,
-//       last_name: updatedUser.last_name,
-//       username: updatedUser.username,
-//       phone_number: updatedUser.phone_number,
-//       email: updatedUser.email,
-//       token: generateToken(updatedUser),
-//       image: updatedUser.image,
-//       isAdmin: updatedUser.isAdmin,
-//     };
-//     return res.status(201).json({
-//       message: 'Профиль обновлён',
-//       response,
-//     });
-//   } catch (e) {
-//     res.status(500).send({ message: 'Something went wrong' });
-//   }
-// });
-
-// userRouter.put("/updateBalance", isAuth, async (req, res) => {
-//   try {
-//     console.log(req.body);
-//     const user = await User.findOne({ _id: req.user._id });
-//     user.balance = req.body.balance;
-//     const updatedUser = await user.save();
-//     console.log(updatedUser);
-//     const response = {
-//       _id: updatedUser._id,
-//       first_name: updatedUser.first_name,
-//       last_name: updatedUser.last_name,
-//       username: updatedUser.username,
-//       phone_number: updatedUser.phone_number,
-//       email: updatedUser.email,
-//       token: generateToken(updatedUser),
-//       image: updatedUser.image,
-//       isAdmin: updatedUser.isAdmin,
-//       balance: updatedUser.balance,
-//     };
-//     return res.status(201).json({
-//       message: "Баланс обновлён",
-//       response,
-//     });
-//   } catch (e) {
-//     res.status(500).send({ message: "Something went wrong" });
-//   }
-// });
 
 userRouter.delete('/:id', isAuth, isAdmin, async (req, res) => {
   const user = await User.findById(req.params.id);

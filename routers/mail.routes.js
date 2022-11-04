@@ -6,6 +6,9 @@ const mailRouter = express.Router();
 mailRouter.post('/', (req, res) => {
   console.log(req.body);
   const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    secure: false,
+    requireTLS: true,
     service: 'gmail',
     auth: {
       user: 'oleksandrmegadev@gmail.com',

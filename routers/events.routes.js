@@ -97,10 +97,6 @@ router.post('/createEvent', isAuth, isAdmin, async (req, res) => {
 
     const updatedEvent = await event.save();
 
-    console.log('updatedEvent', updatedEvent);
-
-    // console.log('TX', tx);
-
     res.status(201).send({
       massage: 'Event approved',
     });
@@ -148,9 +144,6 @@ router.post('/addUserToEvent', isAuth, isAdmin, async (req, res) => {
     );
 
     const tx = await web3.eth.sendSignedTransaction(createTransaction.rawTransaction);
-
-    console.log('TX', tx);
-
     res.status(201).send({
       ...tx,
     });
@@ -161,7 +154,6 @@ router.post('/addUserToEvent', isAuth, isAdmin, async (req, res) => {
 });
 
 router.delete('/:id', isAuth, isAdmin, async (req, res) => {
-  console.log('req.params.id', req.params.id);
   const event = await Event.findById(req.params.id);
   console.log(event);
   if (event) {
@@ -175,7 +167,6 @@ router.delete('/:id', isAuth, isAdmin, async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
-
     res.status(200).json(event);
   } catch (error) {
     res.status(404).send({ message: 'Event not found' });

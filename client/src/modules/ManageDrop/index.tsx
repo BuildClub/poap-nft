@@ -32,6 +32,7 @@ const ManageDrop = ({}) => {
   const [fileName, setFileName] = useState<string>('');
   const [eventId, setEventId] = useState<number | null>(null);
   const [eventsActive, setEventsActive] = useState<boolean>(false);
+  const [eventsLoading, setEventsLoading] = useState<boolean>(true);
   const [isEventOwner, setIsEventOwner] = useState<boolean>(false);
   const [fileError, setFileError] = useState<boolean>(false);
   const [users, setUsers] = useState<string[]>([]);
@@ -135,6 +136,7 @@ const ManageDrop = ({}) => {
   }, [eventsList]);
 
   useEffect(() => {
+    setEventsLoading(true);
     if (eventsList && eventsList.length > 1 && account && notMintedEvents.length) {
       let filtredEvents = eventsList.filter(
         (item: any) =>
@@ -145,6 +147,7 @@ const ManageDrop = ({}) => {
 
       if (filtredEvents.length === 0) {
         setEventsActive(false);
+        setEventsLoading(false);
         return;
       }
 
@@ -164,6 +167,7 @@ const ManageDrop = ({}) => {
       setEventsActive(true);
     } else {
       setEventsActive(false);
+      setEventsLoading(false);
     }
   }, [eventsList, account, notMintedEvents]);
 
@@ -192,7 +196,7 @@ const ManageDrop = ({}) => {
       setIsModalSalesSettings(false);
     } catch (error) {
       setIsWaitingModalVisible(false);
-      setIsModalSalesSettings(false);
+      setIsModalSalesSettings(true);
       setIsErrorModalVisible(true);
       console.log('Error setEventMinters:', error);
     }
@@ -202,12 +206,17 @@ const ManageDrop = ({}) => {
     setEventId(e);
   };
 
+  useEffect(() => {
+    if (events.length && !eventId) {
+      setEventId(+events[0][2].toString());
+    }
+  }, [events, eventId]);
+
   const onChange = (e: any) => {
     const [file] = e.target.files;
     const reader = new FileReader();
 
     if (!file.name.includes('.xlsx')) {
-      console.log('File is not xlsx');
       setFileError(true);
       return;
     }
@@ -224,10 +233,20 @@ const ManageDrop = ({}) => {
       const ws = wb.Sheets[wsname];
       //@ts-ignore
       const dataJson = XLSX.utils.sheet_to_json(ws, { header: 1 });
-      //@ts-ignore
-      const usersEmails = dataJson.map((item) => item[0]);
-      //@ts-ignore
-      const usersAddresses: string[] = dataJson.map((item) => item[1]);
+
+      const usersEmails = dataJson
+        .map((item) => {
+          //@ts-ignore
+          if (item.length) return item[0];
+        })
+        .filter((item) => !!item);
+
+      const usersAddresses = dataJson
+        .map((item) => {
+          //@ts-ignore
+          if (item.length) return item[1];
+        })
+        .filter((item) => !!item);
 
       selEmails(usersEmails);
       setUsers(usersAddresses);
@@ -235,22 +254,12 @@ const ManageDrop = ({}) => {
     reader.readAsBinaryString(file);
   };
 
-  if (isEventsListLoading) {
-    return (
-      <div className="container h100">
-        <div className={s.inner}>
-          <Skeleton active />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="container h100">
       <div className={s.inner}>
         <h4 className={s.title}>Manage drop</h4>
 
-        {eventsActive && (
+        {eventsActive ? (
           <>
             <div className={s.inputs}>
               <div className={cn(s.input, s.refresh)}>
@@ -293,20 +302,6 @@ const ManageDrop = ({}) => {
 
                 {fileError && <div className={s.error}>File must have xlsx extension</div>}
               </div>
-
-              {/* <h5 className={s.subTitle}>
-              Upload users addresses and emails{' '}
-              <Tooltip
-                placement="bottomLeft"
-                trigger={'hover'}
-                title={
-                  "Please upload an excel sheet filled in the following format: Column 1 - event attendee's email Column 2 - event attendee's wallet address"
-                }
-                overlayClassName={s.nftCards__tooltip}
-              >
-                <i className={'icon-exclamation'} />
-              </Tooltip>
-            </h5> */}
             </div>
             <div>
               *Please upload an excel sheet field in the following format Column 1 - event
@@ -319,9 +314,13 @@ const ManageDrop = ({}) => {
               </button>
             </div>
           </>
+        ) : !eventsActive && eventsLoading ? (
+          <Skeleton active />
+        ) : (
+          <div className={s.noImage}>There are no events</div>
         )}
-        {!eventsActive && <div className={s.noImage}>There are no events</div>}
       </div>
+
       <ModalContainer
         className="Modal-container padding-reset"
         isVisible={isModalSalesSettings}
@@ -335,7 +334,6 @@ const ManageDrop = ({}) => {
 
         {isWaitingModalVisible && <WaitingModal setIsModalVisible={setIsModalSalesSettings} />}
       </ModalContainer>
-      <ToastContainer theme="colored" />
     </div>
   );
 };

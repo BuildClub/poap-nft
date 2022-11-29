@@ -29,3 +29,5 @@ yarn-error.log*
 
 .idea
 .idea/
+.env
+client/.env

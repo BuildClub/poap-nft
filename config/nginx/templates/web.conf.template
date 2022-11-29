@@ -1,0 +1,51 @@
+upstream web_server {
+    server web:5002;
+}
+
+server {
+    # Listen to port 443 on both IPv4 and IPv6.
+    listen 443 ssl;
+    listen [::]:443;
+
+    # Domain names this server should respond to.
+    server_name ${WEB_SERVER_NAME};
+
+    # Load the certificate files.
+    ssl_certificate         /etc/letsencrypt/live/${WEB_SERVER_NAME}/fullchain.pem;
+    ssl_certificate_key     /etc/letsencrypt/live/${WEB_SERVER_NAME}/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/${WEB_SERVER_NAME}/chain.pem;
+
+    # Load the Diffie-Hellman parameter.
+    ssl_dhparam /etc/letsencrypt/dhparams/dhparam.pem;
+
+    location / {
+        proxy_pass http://web_server;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Scheme $scheme;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Real-IP $remote_addr;
+
+        if ($request_method = 'OPTIONS') {
+            add_header 'Access-Control-Allow-Origin' '${CORS_ALLOWED_ORIGINS}';
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,X-Amz-Date';
+            add_header 'Access-Control-Max-Age' 86400;
+            add_header 'Content-Type' 'text/html; charset=utf-8';
+            add_header 'Content-Length' 0;
+            return 204;
+        }
+        if ($request_method = 'POST') {
+            add_header 'Access-Control-Allow-Origin' '${CORS_ALLOWED_ORIGINS}';
+            add_header 'Access-Control-Allow-Credentials' 'true';
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+            add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+        }
+        if ($request_method = 'GET') {
+            add_header 'Access-Control-Allow-Origin' '${CORS_ALLOWED_ORIGINS}';
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,X-Amz-Date';
+            add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
+        }
+    }
+}

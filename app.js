@@ -1,13 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const cors = require('cors');
+// NOTE: Commented as on a production we have nginx cors
+// const cors = require('cors');
 const path = require('node:path');
 const app = express();
 
 dotenv.config();
 
-app.use(cors());
+// app.use(cors());
 app.use(express.json({ extended: true }));
 
 app.use('/sendmail', require('./routers/mail.routes'));

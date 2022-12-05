@@ -11,13 +11,13 @@ mailRouter.post('/', (req, res) => {
     requireTLS: true,
     service: 'gmail',
     auth: {
-      user: 'oleksandrmegadev@gmail.com',
-      pass: 'csfzvdccqxlhxbyh',
+      user: process.env.EMAIL_NAME,
+      pass: process.env.EMAIL_PASS,
     },
   });
 
   const mailOptions = {
-    from: `oleksandrmegadev@gmail.com`,
+    from: process.env.EMAIL_NAME,
     to: `${req.body.to}`,
     subject: req.body.subject,
     // subject: `You have received the memo nft`,

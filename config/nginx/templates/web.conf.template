@@ -20,7 +20,7 @@ server {
 
     set $cors "";
 
-    if ($http_origin ~* (https?://.*\.collectpups\.com(:[0-9]+)?$)) {
+    if ($http_origin ~* "^https?://(collectpups.com|www.collectpups.com)$") {
         set $cors "1";
     }
 

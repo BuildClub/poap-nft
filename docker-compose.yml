@@ -43,7 +43,7 @@ services:
       - ./config/nginx/certbot.env
     environment:
       - WEB_SERVER_NAME=api.collectpups.com
-      - CORS_ALLOWED_ORIGINS=https://collectpups.com
+      - CORS_ALLOWED_ORIGINS="https?://.*\.collectpups\.com(:[0-9]+)?$"
     ports:
       - 80:80
       - 443:443

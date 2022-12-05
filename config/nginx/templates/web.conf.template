@@ -8,19 +8,19 @@ server {
     listen [::]:443;
 
     # Domain names this server should respond to.
-    server_name ${WEB_SERVER_NAME};
+    server_name api.collectpups.com;
 
     # Load the certificate files.
-    ssl_certificate         /etc/letsencrypt/live/${WEB_SERVER_NAME}/fullchain.pem;
-    ssl_certificate_key     /etc/letsencrypt/live/${WEB_SERVER_NAME}/privkey.pem;
-    ssl_trusted_certificate /etc/letsencrypt/live/${WEB_SERVER_NAME}/chain.pem;
+    ssl_certificate         /etc/letsencrypt/live/api.collectpups.com/fullchain.pem;
+    ssl_certificate_key     /etc/letsencrypt/live/api.collectpups.com/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/api.collectpups.com/chain.pem;
 
     # Load the Diffie-Hellman parameter.
     ssl_dhparam /etc/letsencrypt/dhparams/dhparam.pem;
 
     set $cors "";
 
-    if ($http_origin ~* (${CORS_ALLOWED_ORIGINS})) {
+    if ($http_origin ~* (https?://.*\.collectpups\.com(:[0-9]+)?$)) {
         set $cors "1";
     }
 

@@ -1,12 +1,12 @@
 # CollectPUps - Collect Godwoken Power Ups
 
-[Godwoken Power Ups](https://collectpups.com/) (PUps) are NFTs to celebrate events, be given as prizes, and more. These are similar to [POAPs](https://www.coindesk.com/learn/poaps-what-is-a-proof-of-attendance-protocol/).
+[Godwoken Power Ups](https://collectpups.com/) (PUps) are NFTs to celebrate events, be given as prizes, and more. These are similar to [POAPs](https://www.coindesk.com/learn/poaps-what-is-a-proof-of-attendance-protocol/) from other ecosystems.
 
 ## Developing
 
-These instructions describe how to launch, run, and develop using the open-source code base.
+These instructions describe how to launch and run a development environment using this code base.
 
-If you don't need to develop and just want to use it, visit the [CollectPUps.com](https://collectpups.com/) website.
+If you don't need to develop and just want to use the site, please visit [CollectPUps.com](https://collectpups.com/).
 
 ### Supported Environments
 - Ubuntu Linux 20.04
@@ -52,13 +52,15 @@ yarn start
 
 ### Granting Admin Privileges to an Account 
 
-Create an account normally using the Sign up form, then use these steps to grant it admin privileges.
+There are two types of accounts: Regular accounts and admin accounts. Anyone can sign up for a regular account, but events can only be approved by admin accounts.  
+
+To create an admin account, use the regular sign up form to create a normal account, then use the steps below to grant admin privileges to that account in the database.
 
 ```sh
-# Launch MongoDB Console
-docker-compose exec mongo mongosh "mongodb://memo_nft:memo_pswd@mongo:27017/poap-db?retryWrites=true&w=majority" 
+# Launch MongoDB console.
+docker-compose -f docker-compose.local.yml exec mongo mongosh "mongodb://memo_nft:memo_pswd@mongo:27017/poap-db?retryWrites=true&w=majority"
 
-# View All Users
+# View all users. (Optional step to view all accounts.)
 db.users.find()
 
 # Update the isAdmin flag on a specific account.
